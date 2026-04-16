@@ -49,4 +49,10 @@ Full Attention: **O(N²)** — 토큰 2배 → 연산 4배. Context Window 한�
 
 **관련:** [트랜스포머]({{ site.baseurl }}/concepts/transformer/) · [SWA]({{ site.baseurl }}/concepts/sliding-window-attention/) · [임베딩]({{ site.baseurl }}/concepts/embedding/)
 
-**← [Gemma 4를 이해하는 과정]({{ site.baseurl }}/posts/gemma4-understanding/)으로 돌아가기**
+{% assign referencing_posts = site.posts | where_exp: "post", "post.content contains '/concepts/attention/'" %}
+{% if referencing_posts.size > 0 %}
+**이 개념을 참조하는 글:**
+{% for post in referencing_posts %}
+- [{{ post.title }}]({{ post.url | relative_url }})
+{% endfor %}
+{% endif %}

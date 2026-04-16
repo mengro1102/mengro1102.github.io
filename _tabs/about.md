@@ -53,4 +53,4 @@ Reinforcement Learning · Deep Learning Architecture · Image/Tensor Data Proces
 ### Contact
 
 - Email: [leeroy7321@gmail.com](mailto:leeroy7321@gmail.com)
-- GitHub: [github.com/mrlee1102](https://github.com/mrlee1102)
+- GitHub: [github.com/mengro1102](https://github.com/mengro1102)

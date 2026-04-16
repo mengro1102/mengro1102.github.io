@@ -47,4 +47,10 @@ RNN/LSTM의 순차 처리 한계를 셀프 어텐션의 병렬 행렬 연산으�
 
 **관련:** [어텐션]({{ site.baseurl }}/concepts/attention/) · [토큰화]({{ site.baseurl }}/concepts/tokenization/) · [임베딩]({{ site.baseurl }}/concepts/embedding/) · [양자화]({{ site.baseurl }}/concepts/quantization/) · [SWA]({{ site.baseurl }}/concepts/sliding-window-attention/)
 
-**← [Gemma 4를 이해하는 과정]({{ site.baseurl }}/posts/gemma4-understanding/)으로 돌아가기**
+{% assign referencing_posts = site.posts | where_exp: "post", "post.content contains '/concepts/transformer/'" %}
+{% if referencing_posts.size > 0 %}
+**이 개념을 참조하는 글:**
+{% for post in referencing_posts %}
+- [{{ post.title }}]({{ post.url | relative_url }})
+{% endfor %}
+{% endif %}
