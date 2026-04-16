@@ -4,7 +4,7 @@ theme: jekyll-theme-chirpy
 lang: ko-KR
 timezone: Asia/Seoul
 
-title: "이명로의 AI 연구 블로그"
+title: "이명로의 Deep Dive"
 tagline: "깊이 이해한 뒤 빠르게 실현하는 AI 연구자의 성장 기록"
 
 description: >-
@@ -18,7 +18,7 @@ github:
 
 social:
   name: 이명로 (Myungro Lee)
-  email: ""
+  email: "leeroy7321@gmail.com"
   links:
     - https://github.com/mengro1102
 
