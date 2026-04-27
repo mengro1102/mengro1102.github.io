@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: "어텐션 (Attention)"
 description: "문장 내 특정 단어를 이해할 때 어떤 단어에 얼마나 집중할지를 수학적으로 계산하는 메커니즘."
 tags: [개념, AI, Transformer]

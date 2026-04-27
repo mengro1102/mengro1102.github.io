@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: "임베딩 (Embedding)"
 description: "단어의 의미를 고차원 벡터 공간의 좌표로 변환하는 기술."
 tags: [개념, NLP, LLM]

@@ -1,114 +1,86 @@
-# The Site Configuration
-theme: jekyll-theme-chirpy
-
+# ===== Site =====
+title: "이명로의 Deep Dive"
+tagline: "개인 블로그 및 기술 저장소"
+description: "이명로의 개인 블로그입니다. 딥러닝과 자율주행, 그리고 다양한 기술들을 다룹니다."
+url: "https://mengro1102.github.io"
+baseurl: ""
 lang: ko-KR
 timezone: Asia/Seoul
 
-title: "이명로의 Deep Dive"
-tagline: "깊이 이해한 뒤 빠르게 실현하는 AI 연구자의 성장 기록"
-
-description: >-
-  AI 연구자 이명로의 세컨드 브레인. 논문 리뷰, 개념 딥다이브, 프로젝트 기록.
-
-url: "https://mengro1102.github.io"
-baseurl: ""
-
-github:
-  username: mengro1102
-
-social:
-  name: 이명로 (Myungro Lee)
+# ===== Branding =====
+brand:
+  short_name: "ML"
+  long_name: "Lee Myung-Ro"
+  logo: "/assets/img/logo/SIT_Logo_128.png"
+  mark:  "/assets/img/logo/SIT_Mark_512.png"
+  favicon: "/assets/img/favicons/favicon.ico"
+  github_org: "https://github.com/mengro1102"
+  flagship_repo: "https://github.com/mengro1102/mengro1102.github.io"
   email: "leeroy7321@gmail.com"
-  links:
-    - https://github.com/mengro1102
+  instagram: "https://instagram.com/meng._.ro"
 
-avatar: "/assets/img/profile.jpg"
+# ===== Navigation tabs (header) =====
+nav:
+  - { title: "소개",       url: "/about/" }
+  - { title: "Posts",      url: "/posts/" }
+  - { title: "Concepts",   url: "/concepts/" }
+  - { title: "Contact",    url: "/contact/" }
 
-toc: true
-theme_mode: light
-
-paginate: 10
-
+# ===== Collections =====
 collections:
-  tabs:
+  posts:
     output: true
-    sort_by: order
+    permalink: /posts/:year/:month/:day/:title/
   concepts:
     output: true
-    sort_by: title
+    permalink: /concepts/:name/
 
+# ===== Front-matter defaults =====
 defaults:
-  - scope:
-      path: ""
-      type: posts
+  - scope: { path: "", type: "posts" }
     values:
       layout: post
-      comments: true
-      toc: true
-      permalink: /posts/:title/
-  - scope:
-      path: ""
-      type: concepts
+      collection_name: posts
+      collection_label: "Posts"
+      collection_url: "/posts/"
+  - scope: { path: "", type: "concepts" }
+    values:
+      layout: post
+      collection_name: concepts
+      collection_label: "Concepts"
+      collection_url: "/concepts/"
+  - scope: { path: "", type: "pages" }
     values:
       layout: page
-      permalink: /concepts/:title/
-  - scope:
-      path: _drafts
-    values:
-      comments: false
-  - scope:
-      path: ""
-      type: tabs
-    values:
-      layout: page
-      permalink: /:title/
 
+# ===== Plugins =====
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# ===== Build =====
+markdown: kramdown
+highlighter: rouge
 kramdown:
-  footnote_backlink: "&#8617;&#xfe0e;"
+  input: GFM
   syntax_highlighter: rouge
   syntax_highlighter_opts:
-    css_class: highlight
-    span:
-      line_numbers: false
-    block:
-      line_numbers: true
-      start_line: 1
-  math_engine: mathjax
+    css_class: "highlight"
 
-sass:
-  style: compressed
-
-compress_html:
-  clippings: all
-  comments: all
-  endings: all
-  profile: false
-  blanklines: false
-  ignore:
-    envs: [development]
+permalink: /:year/:month/:day/:title/
+excerpt_separator: "<!-- more -->"
 
 exclude:
-  - "*.gem"
-  - "*.gemspec"
-  - docs
-  - tools
+  - _backup_mkdocs/
+  - vendor/
+  - Gemfile
+  - Gemfile.lock
   - README.md
   - LICENSE
-  - purgecss.js
-  - "*.config.js"
-  - "package*.json"
-
-jekyll-archives:
-  enabled: [categories, tags]
-  layouts:
-    category: category
-    tag: tag
-  permalinks:
-    tag: /tags/:name/
-    category: /categories/:name/
-
-pwa:
-  enabled: true
-  cache:
-    enabled: true
-    deny_paths: []
+  - .gitignore
+  - .editorconfig
+  - .gitattributes
+  - .github/
+  - node_modules/
+  - .sass-cache/

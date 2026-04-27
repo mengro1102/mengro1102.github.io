@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: "양자화 (Quantization)"
 description: "모델 가중치의 숫자 정밀도를 낮춰 메모리 사용량을 줄이는 기술. GPTQ, AWQ, GGUF 비교."
 tags: [개념, LLM, 최적화]

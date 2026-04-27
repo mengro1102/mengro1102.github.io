@@ -1,0 +1,23 @@
+{% assign coll = site[page.collection_name] | sort: 'date' | reverse %}
+{% assign idx = -1 %}
+{% for p in coll %}{% if p.url == page.url %}{% assign idx = forloop.index0 %}{% endif %}{% endfor %}
+{% if idx >= 0 %}
+  {% assign prev = coll[idx | plus: 1] %}
+  {% assign next = coll[idx | minus: 1] %}
+  {% if prev or next %}
+  <nav class="post-nav" aria-label="포스트 네비게이션">
+    {% if prev %}
+      <a class="post-nav__item prev" href="{{ prev.url | relative_url }}">
+        <span class="post-nav__label">← 이전 글</span>
+        <span class="post-nav__title">{{ prev.title }}</span>
+      </a>
+    {% else %}<span></span>{% endif %}
+    {% if next %}
+      <a class="post-nav__item next" href="{{ next.url | relative_url }}">
+        <span class="post-nav__label">다음 글 →</span>
+        <span class="post-nav__title">{{ next.title }}</span>
+      </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+{% endif %}

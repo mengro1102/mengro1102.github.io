@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: "트랜스포머 (Transformer)"
 description: "2017년 구글이 발표한 현대 LLM의 표준 아키텍처."
 tags: [개념, AI, 아키텍처]

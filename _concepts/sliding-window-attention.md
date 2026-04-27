@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: "Sliding Window Attention (SWA)"
 description: "고정 크기 윈도우 내에서만 어텐션을 수행하여 효율성을 높이는 기법. RAttention 해설 포함."
 tags: [개념, Transformer, 효율성]

@@ -1,0 +1,23 @@
+---
+layout: default
+title: "Concepts"
+---
+
+<div class="hero">
+  <div class="container hero-inner">
+    <span class="hero-eyebrow">CORE CONCEPTS</span>
+    <h1>핵심 <span class="accent">개념 정리</span></h1>
+    <p class="lead">복잡한 기술적 개념들을 깊이 있게 파헤치고 정리한 문서들입니다.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="posts-grid">
+      {% assign concepts = site.concepts | sort: 'title' %}
+      {% for concept in concepts %}
+        {% include postcard.html post=concept %}
+      {% endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+---
+layout: default
+---
+<article class="post-article">
+  <div class="container post-container">
+
+    <div class="post-meta-top">
+      <a class="breadcrumb" href="{{ page.collection_url | relative_url }}">{{ page.collection_label }}</a>
+      {% if page.categories.size > 0 %}
+        <span class="dot">·</span>
+        {% for cat in page.categories %}<span class="post-cat">{{ cat }}</span>{% unless forloop.last %}<span class="dot">·</span>{% endunless %}{% endfor %}
+      {% endif %}
+    </div>
+
+    <h1 class="post-title">{{ page.title }}</h1>
+
+    <div class="post-meta">
+      {% if page.date %}
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %m월 %d일" }}</time>
+      {% endif %}
+      {% if page.author %}
+        <span class="dot">·</span>
+        <span>by {{ page.author }}</span>
+      {% endif %}
+      {% if page.read_time %}
+        <span class="dot">·</span>
+        <span>{{ page.read_time }} min read</span>
+      {% endif %}
+    </div>
+
+    {% if page.cover %}
+      <figure class="post-cover">
+        <img src="{{ page.cover | relative_url }}" alt="{{ page.title }} cover">
+      </figure>
+    {% endif %}
+
+    <div class="post-content">
+      {{ content }}
+    </div>
+
+    {% if page.tags.size > 0 %}
+    <div class="post-tags">
+      {% for t in page.tags %}<span class="tag-chip">#{{ t }}</span>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% include post-nav.html %}
+
+  </div>
+</article>

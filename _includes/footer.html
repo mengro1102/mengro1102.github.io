@@ -1,0 +1,41 @@
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="{{ site.brand.logo | relative_url }}" alt="" class="footer-logo">
+      <div>
+        <p class="footer-name">{{ site.brand.long_name }}</p>
+        <p class="footer-tag">{{ site.tagline }}</p>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Site</h4>
+        <ul>
+          {% for item in site.nav %}
+          <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Links</h4>
+        <ul>
+          <li><a href="{{ site.brand.github_org }}" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="{{ site.brand.flagship_repo }}" target="_blank" rel="noopener">Source Code</a></li>
+          <li><a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:{{ site.brand.email }}">{{ site.brand.email }}</a></li>
+          <li><a href="{{ site.brand.instagram }}" target="_blank" rel="noopener">@meng._.ro</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <small>&copy; {{ 'now' | date: '%Y' }} {{ site.brand.long_name }}. Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/deed.ko" rel="noopener">CC BY 4.0</a>.</small>
+    <small>Built with Jekyll · Hosted on GitHub Pages</small>
+  </div>
+</footer>

@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: "토큰화 (Tokenization)"
 description: "텍스트를 의미를 가진 최소 단위(토큰)로 분할하는 전처리 과정. BPE 알고리즘 상세 해설."
 tags: [개념, NLP, LLM, BPE]
