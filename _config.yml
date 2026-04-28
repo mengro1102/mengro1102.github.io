@@ -60,6 +60,8 @@ plugins:
   - jekyll-seo-tag
 
 # ===== Build =====
+theme: null
+
 markdown: kramdown
 highlighter: rouge
 kramdown:
