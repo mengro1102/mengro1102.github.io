@@ -10,7 +10,7 @@ timezone: Asia/Seoul
 # ===== Branding =====
 brand:
   short_name: "MR"
-  long_name: "MyungRo Lee"
+  long_name: "Myeong Ro Lee"
   logo_text: "Deep Dive" # 로고 이미지 대신 텍스트 사용을 위한 필드 추가
   logo: "/assets/img/logo/SIT_Logo_128.png" # 기존 경로 유지하되 헤더에서 조건부 렌더링 고려
   mark:  "/assets/img/logo/SIT_Mark_512.png"
