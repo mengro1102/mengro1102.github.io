@@ -162,6 +162,16 @@ a:hover { color: var(--sky-hover); }
 .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--text); }
 .brand:hover { color: var(--text); }
 .brand-logo { width: 32px; height: 32px; border-radius: 6px; }
+.brand-logo-text {
+  width: 36px; height: 36px;
+  background: var(--text);
+  color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 14px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+}
+
 .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
 .brand-text__main { font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
 .brand-text__sub { font-size: 11px; color: var(--text-mute); margin-top: 2px; }
