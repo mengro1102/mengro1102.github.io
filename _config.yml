@@ -10,10 +10,9 @@ timezone: Asia/Seoul
 # ===== Branding =====
 brand:
   short_name: "MR"
-  long_name: "Myeong Ro Lee"
-  logo_text: "Deep Dive" # 로고 이미지 대신 텍스트 사용을 위한 필드 추가
-  logo: "/assets/img/logo/SIT_Logo_128.png" # 기존 경로 유지하되 헤더에서 조건부 렌더링 고려
-  mark:  "/assets/img/logo/SIT_Mark_512.png"
+  long_name: "Lee Myeong Ro"
+  logo: "/assets/img/profile.jpg"
+  mark:  "/assets/img/profile.jpg"
   favicon: "/assets/img/favicons/favicon.ico"
   github_org: "https://github.com/mengro1102"
   flagship_repo: "https://github.com/mengro1102/mengro1102.github.io"

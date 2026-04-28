@@ -1,10 +1,10 @@
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.brand.long_name }} 홈">
-      <div class="brand-logo-text">{{ site.brand.short_name }}</div>
+      <img src="{{ site.brand.logo | relative_url }}" alt="{{ site.brand.short_name }}" class="brand-logo">
       <span class="brand-text">
-        <span class="brand-text__main">{{ site.brand.logo_text | default: site.brand.long_name }}</span>
-        <span class="brand-text__sub">by {{ site.brand.long_name }}</span>
+        <span class="brand-text__main">{{ site.brand.long_name }}</span>
+        <span class="brand-text__sub">Personal Blog & AI Research</span>
       </span>
     </a>
 
