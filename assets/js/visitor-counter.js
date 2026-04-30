@@ -37,25 +37,25 @@ async function updateVisitorCount() {
     const ip = await getVisitorIP();
     const hashedIP = await hashIP(ip);
     
+    // KST(한국 시간) 정확하게 계산 (접속자 로컬 시간 오차 방지)
     const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000;
-    const kstDate = new Date(now.getTime() + kstOffset);
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const kstDate = new Date(utc + (9 * 60 * 60 * 1000));
     
     const todayStr = kstDate.toISOString().split('T')[0];
     const yesterdayDate = new Date(kstDate.getTime() - 24 * 60 * 60 * 1000);
     const yesterdayStr = yesterdayDate.toISOString().split('T')[0];
 
     const visitorRef = ref(db, `visitors/${todayStr}/${hashedIP}`);
-    const statsRef = ref(db, `stats`);
 
-    // Check if this IP already visited today
+    // 오늘 해당 IP가 방문했는지 확인
     const snapshot = await get(visitorRef);
     
     if (!snapshot.exists()) {
-        // New unique visitor for today
+        // 오늘 처음 방문한 경우
         await set(visitorRef, true);
         
-        // Update total and today counts using transaction
+        // 트랜잭션을 이용해 안전하게 카운트 증가
         const todayCountRef = ref(db, `counts/${todayStr}`);
         await runTransaction(todayCountRef, (current) => (current || 0) + 1);
         
@@ -63,14 +63,18 @@ async function updateVisitorCount() {
         await runTransaction(totalCountRef, (current) => (current || 0) + 1);
     }
 
-    // Fetch values to display
+    // 화면에 표시할 데이터 가져오기
     const todayVal = (await get(ref(db, `counts/${todayStr}`))).val() || 0;
     const yesterdayVal = (await get(ref(db, `counts/${yesterdayStr}`))).val() || 0;
     const totalVal = (await get(ref(db, `counts/total`))).val() || 0;
 
-    document.getElementById('stats-today').innerText = todayVal.toLocaleString();
-    document.getElementById('stats-yesterday').innerText = yesterdayVal.toLocaleString();
-    document.getElementById('stats-total').innerText = totalVal.toLocaleString();
+    // HTML 요소에 값 주입
+    const elToday = document.getElementById('stats-today');
+    const elYesterday = document.getElementById('stats-yesterday');
+    const elTotal = document.getElementById('stats-total');
+    if (elToday) elToday.innerText = todayVal.toLocaleString();
+    if (elYesterday) elYesterday.innerText = yesterdayVal.toLocaleString();
+    if (elTotal) elTotal.innerText = totalVal.toLocaleString();
 }
 
 document.addEventListener('DOMContentLoaded', updateVisitorCount);
