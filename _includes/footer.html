@@ -6,11 +6,19 @@
         <p class="footer-name">{{ site.brand.long_name }}</p>
         <p class="footer-tag">{{ site.tagline }}</p>
         
-        <!-- 방문자 카운터 (Hits API 기반) -->
+        <!-- 방문자 카운터 (Firebase 기반) -->
         <div class="stats-widget">
           <div class="stat-item">
-            <span class="stat-label">Total Hits</span>
-            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fmengro1102.github.io&count_bg=%238B5CF6&title_bg=%231E1B4B&icon=&icon_color=%23E7E7E7&title=Views&edge_flat=true" alt="Hits">
+            <span class="stat-label">Today</span>
+            <span class="stat-value" id="stats-today">...</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Yesterday</span>
+            <span class="stat-value" id="stats-yesterday">...</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total</span>
+            <span class="stat-value" id="stats-total">...</span>
           </div>
         </div>
       </div>
@@ -46,4 +54,7 @@
     <small>&copy; {{ 'now' | date: '%Y' }} {{ site.brand.long_name }}. Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/deed.ko" rel="noopener">CC BY 4.0</a>.</small>
     <small>Built with Jekyll · Hosted on GitHub Pages</small>
   </div>
+
+  <!-- 방문자 카운터 스크립트 (Firebase) -->
+  <script type="module" src="{{ '/assets/js/visitor-counter.js' | relative_url }}"></script>
 </footer>
