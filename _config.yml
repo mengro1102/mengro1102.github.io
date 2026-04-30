@@ -3,7 +3,7 @@ title: "이명로의 Deep Dive"
 tagline: "AI 모델의 깊은 이해와 효율적인 실현을 기록합니다"
 description: "LLM, SLM, Transformer 등 최신 AI 기술의 원리를 깊이 있게 파헤치고, 효율적인 최적화 및 구현 방법을 탐구하는 기술 블로그입니다."
 url: "https://mengro1102.github.io"
-google_analytics: "" # 여기에 G-XXXXXXXXXX 형식의 측정 ID를 입력하세요
+google_analytics: "G-8Z8WJELV3X"
 baseurl: ""
 lang: ko-KR
 timezone: Asia/Seoul
