@@ -6,29 +6,121 @@ title: "소개"
   <div class="container hero-inner">
     <span class="hero-eyebrow">ABOUT ME</span>
     <h1>이명로 <span class="accent">Lee Myeong Ro</span></h1>
-    <p class="lead">기술의 본질을 이해하고 실질적인 가치를 만드는 엔지니어를 지향합니다.</p>
+    <p class="lead">기술의 본질을 이해하고 실질적인 가치를 만드는 AI 연구 엔지니어입니다.</p>
   </div>
 </div>
+
 <section class="section">
   <div class="container">
-    <div class="page-article" style="padding-top:0;">
-      <h2>소개</h2>
-      <p>안녕하세요! 딥러닝과 AI 기술에 깊은 관심을 가지고 공부하고 있는 이명로입니다. 단순히 기술을 사용하는 것을 넘어, 그 이면의 수학적 원리와 시스템 아키텍처를 깊이 있게 파헤치는 것을 즐깁니다.</p>
-      <h2>관심 주제</h2>
-      <div class="cards-grid">
-        <div class="card">
-          <h3 class="card__title">Deep Learning</h3>
-          <p class="card__desc">Transformer, Attention 메커니즘 등 최신 딥러닝 아키텍처의 원리를 연구합니다.</p>
-        </div>
-        <div class="card">
-          <h3 class="card__title">Large Language Models</h3>
-          <p class="card__desc">Gemma 4와 같은 최신 SLM/LLM 모델의 구조와 최적화 기법에 관심이 많습니다.</p>
-        </div>
-        <div class="card">
-          <h3 class="card__title">Efficient AI</h3>
-          <p class="card__desc">학습된 모델을 실제 환경에서 효율적으로 구동하기 위한 양자화 및 최적화 기법을 공부합니다.</p>
+
+    <div class="profile-section" style="border-top: none; margin-top: 0; padding-top: 0;">
+
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <img src="{{ site.brand.scholar_photo | relative_url }}" alt="Myeong Ro Lee" class="profile-header__photo">
+        <div class="profile-header__info">
+          <h2 class="profile-header__name">Myeong Ro Lee</h2>
+          <p class="profile-header__role">AI Research Engineer</p>
+          <p class="profile-header__bio">Deep learning, reinforcement learning, and autonomous driving에 집중하고 있는 AI 연구 엔지니어입니다. 단순히 기술을 사용하는 것을 넘어, 그 이면의 수학적 원리와 시스템 아키텍처를 깊이 있게 파헤치는 것을 즐깁니다.</p>
         </div>
       </div>
+
+      <!-- Employment -->
+      <div class="profile-block">
+        <h3 class="profile-block__title">Employment</h3>
+        <div class="profile-entry">
+          <div class="profile-entry__header">
+            <strong>EH R&amp;C Co., Ltd.</strong> — AI Research Engineer
+            <span class="profile-entry__period">Dec 2024 – Present · Incheon, Republic of Korea</span>
+          </div>
+          <ul class="profile-entry__list">
+            <li>Design and implementation of Spatial Matrix Regression models</li>
+            <li>Optimization and performance improvement of deep learning models</li>
+            <li>Conducting AI application research projects in Environmental Health field</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="profile-block">
+        <h3 class="profile-block__title">Education</h3>
+        <div class="profile-entry">
+          <div class="profile-entry__header">
+            <strong>Soongsil University</strong> — M.S. in Information &amp; Telecommunication Engineering
+            <span class="profile-entry__period">Sep 2021 – Feb 2024 · Seoul, Republic of Korea</span>
+          </div>
+          <ul class="profile-entry__list">
+            <li>Advisor: Prof. Yoan Shin</li>
+            <li>Research Focus: Reinforcement Learning, Channel Selection Strategy</li>
+          </ul>
+        </div>
+        <div class="profile-entry">
+          <div class="profile-entry__header">
+            <strong>Soongsil University</strong> — B.S. in Computer Science
+            <span class="profile-entry__period">Mar 2019 – Feb 2021 · Seoul, Republic of Korea</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Publications -->
+      <div class="profile-block">
+        <h3 class="profile-block__title">Publications</h3>
+        <div class="profile-entry">
+          <ul class="profile-entry__list">
+            <li><em>Anti-Jamming Strategy Based on Reinforcement Learning with Sequence Information</em><br>ICAIIC 2024. Osaka, Japan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Technical Skills -->
+      <div class="profile-block">
+        <h3 class="profile-block__title">Technical Skills</h3>
+        <div class="profile-skills">
+          <div class="profile-skills__group">
+            <h4>Languages &amp; Frameworks</h4>
+            <div class="profile-skills__tags">
+              <span class="tag-chip">Python</span>
+              <span class="tag-chip">PyTorch</span>
+              <span class="tag-chip">TensorFlow</span>
+              <span class="tag-chip">C/C++</span>
+              <span class="tag-chip">Linux/Unix</span>
+              <span class="tag-chip">Git</span>
+              <span class="tag-chip">Docker</span>
+              <span class="tag-chip">MATLAB</span>
+            </div>
+          </div>
+          <div class="profile-skills__group">
+            <h4>Research Areas</h4>
+            <div class="profile-skills__tags">
+              <span class="tag-chip">Reinforcement Learning</span>
+              <span class="tag-chip">Deep Learning Architecture</span>
+              <span class="tag-chip">Image/Tensor Data Processing</span>
+              <span class="tag-chip">Signal Processing &amp; Analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Research Interests -->
+      <div class="profile-block">
+        <h3 class="profile-block__title">Research Interests</h3>
+        <div class="cards-grid">
+          <div class="card">
+            <h3 class="card__title">Deep Learning</h3>
+            <p class="card__desc">Transformer, Attention 메커니즘 등 최신 딥러닝 아키텍처의 원리를 연구합니다.</p>
+          </div>
+          <div class="card">
+            <h3 class="card__title">Large Language Models</h3>
+            <p class="card__desc">최신 SLM/LLM 모델의 구조와 양자화, 추론 최적화 기법에 관심이 많습니다.</p>
+          </div>
+          <div class="card">
+            <h3 class="card__title">Autonomous Driving</h3>
+            <p class="card__desc">강화학습 기반 자율주행 시스템과 시뮬레이션 환경 구축을 탐구합니다.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
+
   </div>
 </section>

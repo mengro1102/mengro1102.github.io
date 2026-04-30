@@ -14,7 +14,8 @@ brand:
   long_name: "Lee Myeong Ro"
   logo: "/assets/img/profile.jpg"
   mark:  "/assets/img/profile.jpg"
-  favicon: "/assets/img/favicons/favicon.ico"
+  favicon: "/assets/img/profile.jpg"
+  scholar_photo: "/assets/img/scholar_profile.jpg"
   github_org: "https://github.com/mengro1102"
   flagship_repo: "https://github.com/mengro1102/mengro1102.github.io"
   email: "leeroy7321@gmail.com"
@@ -22,6 +23,7 @@ brand:
 
 # ===== Navigation tabs (header) =====
 nav:
+  - { title: "홈",         url: "/" }
   - { title: "소개",       url: "/about/" }
   - { title: "포스트",     url: "/posts/" }
   - { title: "기술개념",   url: "/concepts/" }
