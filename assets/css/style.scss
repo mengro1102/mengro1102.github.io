@@ -572,48 +572,37 @@ code {
   .profile-skills { grid-template-columns: 1fr; }
 }
 
-/* ===== Header visitor counter ===== */
+/* ===== Header visitor counter (Firebase) ===== */
 .header-stats {
   display: inline-flex;
   align-items: center;
   gap: 0;
-  padding: 5px 14px;
-  background: var(--sky-soft);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  transition: all .15s ease;
-}
-.header-stats:hover {
-  border-color: var(--sky);
+  font-family: var(--font-mono);
 }
 .header-stats__item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 10px;
-}
-.header-stats__label {
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: var(--text-mute);
-  line-height: 1;
-  margin-bottom: 2px;
+  align-items: baseline;
+  gap: 4px;
+  padding: 0 8px;
 }
 .header-stats__value {
   font-size: 13px;
   font-weight: 700;
   color: var(--text);
-  font-family: var(--font-mono);
-  line-height: 1.2;
+  line-height: 1;
 }
 .header-stats__value--accent {
   color: var(--sky);
 }
+.header-stats__label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-mute);
+  line-height: 1;
+}
 .header-stats__divider {
   width: 1px;
-  height: 22px;
+  height: 14px;
   background: var(--border);
 }
 @media (max-width: 920px) {

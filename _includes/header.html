@@ -24,16 +24,21 @@
     </nav>
 
     <div class="header-actions">
-      <!-- Firebase 방문자 카운터 -->
-      <div class="header-stats">
+      <!-- Firebase 방문자 카운터 (IP 기반 일 1회) -->
+      <div class="header-stats" aria-label="방문자 통계">
         <div class="header-stats__item">
-          <span class="header-stats__label">Today</span>
           <span class="header-stats__value" id="stats-today">-</span>
+          <span class="header-stats__label">today</span>
         </div>
         <span class="header-stats__divider"></span>
         <div class="header-stats__item">
-          <span class="header-stats__label">Total</span>
+          <span class="header-stats__value" id="stats-yesterday">-</span>
+          <span class="header-stats__label">yesterday</span>
+        </div>
+        <span class="header-stats__divider"></span>
+        <div class="header-stats__item">
           <span class="header-stats__value header-stats__value--accent" id="stats-total">-</span>
+          <span class="header-stats__label">total</span>
         </div>
       </div>
       <button class="theme-toggle" type="button" aria-label="다크 모드로 전환">
