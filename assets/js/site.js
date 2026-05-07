@@ -80,6 +80,17 @@
   var tocFloat = document.getElementById('toc-float');
   if (!tocInline || !tocFloat) return;
 
+  var tocFloatToggle = document.getElementById('toc-float-toggle');
+  var tocFloatPanel = document.getElementById('toc-float-panel');
+
+  // Toggle panel open/close
+  if (tocFloatToggle && tocFloatPanel) {
+    tocFloatToggle.addEventListener('click', function() {
+      var isOpen = tocFloat.classList.toggle('is-open');
+      tocFloatToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+
   if ('IntersectionObserver' in window) {
     var observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
