@@ -410,6 +410,7 @@ code {
   grid-template-columns: 1.5fr repeat(3, 1fr);
   margin-bottom: 64px;
 }
+.footer-links { display: contents; }
 @media (max-width: 840px) {
   .footer-inner { grid-template-columns: 1fr 1fr; }
 }
