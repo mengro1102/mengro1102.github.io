@@ -780,3 +780,10 @@ code {
 @media (max-width: 1400px) {
   .toc-float { display: none !important; }
 }
+
+/* ===== Anchor offset for sticky header ===== */
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  scroll-margin-top: 80px;
+}
