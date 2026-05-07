@@ -18,11 +18,16 @@ wiki_source: [concepts/ai-agent, sources/claude-code-prompt-caching, sources/her
 
 모든 AI 에이전트는 하나의 루프로 귀결된다:
 
-```
-입력 → 추론/계획 → 도구 호출 → 행동 → 관찰 → 평가 → 정제
-         ↑                                              |
-         └──────────────────────────────────────────────┘
-```
+<div class="mermaid">
+graph LR
+    A[입력] --> B[추론/계획]
+    B --> C[도구 호출]
+    C --> D[행동]
+    D --> E[관찰]
+    E --> F[평가]
+    F --> G[정제]
+    G --> B
+</div>
 
 차이는 이 루프를 **어떻게 구조화하느냐**에 있다.
 
@@ -119,21 +124,26 @@ await 추가 → 테스트 실행 → 전체 통과 ✓
 
 여러 전문화된 에이전트가 협업하는 패턴.
 
-```
-[Orchestrator]
-├── [Researcher] → 문헌 조사, 관련 코드 탐색
-├── [Coder] → 코드 구현
-├── [Reviewer] → 코드 리뷰, 피드백
-└── [Tester] → 테스트 작성 및 실행
+<div class="mermaid">
+graph TD
+    O[Orchestrator] --> R[Researcher]
+    O --> C[Coder]
+    O --> V[Reviewer]
+    O --> T[Tester]
+    R -->|분석 결과| C
+    C -->|구현 완료| V
+    V -->|피드백| C
+    C -->|수정 완료| T
+    T -->|통과| O
+</div>
 
-Orchestrator: "새 API 엔드포인트를 추가해야 합니다"
-→ Researcher: 기존 API 패턴 분석 결과 전달
-→ Coder: 패턴에 맞춰 구현
-→ Reviewer: "에러 핸들링이 부족합니다" → Coder에게 반환
-→ Coder: 수정
-→ Tester: 테스트 통과 확인
-→ Orchestrator: 완료 보고
-```
+**실행 흐름 예시:**
+1. Orchestrator: "새 API 엔드포인트를 추가해야 합니다"
+2. Researcher: 기존 API 패턴 분석 결과 전달
+3. Coder: 패턴에 맞춰 구현
+4. Reviewer: "에러 핸들링이 부족합니다" → Coder에게 반환
+5. Coder: 수정 후 Tester에게 전달
+6. Tester: 테스트 통과 확인 → Orchestrator에 완료 보고
 
 | 장점 | 단점 |
 |------|------|
@@ -191,9 +201,11 @@ Anthropic이 주도하는 표준 프로토콜. 도구를 **서버**로 분리하
 - 도구 재사용 (한 번 만들면 여러 에이전트에서 사용)
 - 표준화된 인터페이스
 
-```
-에이전트 ←→ MCP 클라이언트 ←→ MCP 서버 (도구)
-```
+<div class="mermaid">
+graph LR
+    A[에이전트] <-->|요청/응답| B[MCP 클라이언트]
+    B <-->|표준 프로토콜| C[MCP 서버 - 도구]
+</div>
 
 ---
 
@@ -212,14 +224,15 @@ Anthropic이 주도하는 표준 프로토콜. 도구를 **서버**로 분리하
 
 ## 6. 패턴 선택 가이드
 
-```
-태스크 복잡도?
-├── 단순 (1~3 단계) → ReAct
-└── 복잡 (4+ 단계)
-    ├── 실패 허용? → Reflexion
-    ├── 병렬 가능? → Multi-Agent
-    └── 순차적? → Plan-and-Execute
-```
+<div class="mermaid">
+graph TD
+    Q{태스크 복잡도?}
+    Q -->|단순 1~3단계| R[ReAct]
+    Q -->|복잡 4+단계| C{세부 조건?}
+    C -->|실패에서 학습| RF[Reflexion]
+    C -->|병렬 처리 가능| MA[Multi-Agent]
+    C -->|순차적 실행| PE[Plan-and-Execute]
+</div>
 
 실무에서의 경험칙:
 - **대부분의 코딩 태스크**: ReAct로 충분

@@ -37,6 +37,10 @@
   </script>
   {% endif %}
 
+  <!-- Mermaid.js for diagrams -->
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"
+    onload="mermaid.initialize({startOnLoad:true, theme:'neutral', themeVariables:{primaryColor:'#8B5CF6',primaryTextColor:'#1E1B4B',lineColor:'#6366F1',secondaryColor:'#EDE9FE'}});"></script>
+
   <script>
     // Prevent flash of wrong theme: read stored preference synchronously
     (function(){
