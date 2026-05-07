@@ -41,3 +41,34 @@
     });
   }
 })();
+
+// ===== Table of Contents (TOC) Generator =====
+(function() {
+  var tocList = document.getElementById('toc-list');
+  if (!tocList) return;
+
+  var content = document.querySelector('.post-content');
+  if (!content) return;
+
+  var headings = content.querySelectorAll('h2, h3');
+  if (headings.length < 2) {
+    // 헤딩이 2개 미만이면 목차 숨김
+    var toc = document.querySelector('.toc');
+    if (toc) toc.style.display = 'none';
+    return;
+  }
+
+  var html = '<ul>';
+  headings.forEach(function(h, i) {
+    // ID가 없으면 생성
+    if (!h.id) {
+      h.id = 'heading-' + i;
+    }
+    var level = h.tagName === 'H2' ? 'toc__item--h2' : 'toc__item--h3';
+    html += '<li class="toc__item ' + level + '">';
+    html += '<a href="#' + h.id + '">' + h.textContent + '</a>';
+    html += '</li>';
+  });
+  html += '</ul>';
+  tocList.innerHTML = html;
+})();

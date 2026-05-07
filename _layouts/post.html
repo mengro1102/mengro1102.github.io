@@ -35,6 +35,14 @@ layout: default
     {% endif %}
 
     <div class="post-content">
+      <!-- 목차 (Table of Contents) -->
+      <nav class="toc" aria-label="목차">
+        <details open>
+          <summary class="toc__title">목차</summary>
+          <div class="toc__list" id="toc-list"></div>
+        </details>
+      </nav>
+
       {{ content }}
     </div>
 
