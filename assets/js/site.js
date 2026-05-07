@@ -45,6 +45,7 @@
 // ===== Table of Contents (TOC) Generator =====
 (function() {
   var tocList = document.getElementById('toc-list');
+  var tocFloatList = document.getElementById('toc-float-list');
   if (!tocList) return;
 
   var content = document.querySelector('.post-content');
@@ -52,15 +53,15 @@
 
   var headings = content.querySelectorAll('h2, h3');
   if (headings.length < 2) {
-    // 헤딩이 2개 미만이면 목차 숨김
     var toc = document.querySelector('.toc');
+    var tocFloat = document.getElementById('toc-float');
     if (toc) toc.style.display = 'none';
+    if (tocFloat) tocFloat.style.display = 'none';
     return;
   }
 
   var html = '<ul>';
   headings.forEach(function(h, i) {
-    // ID가 없으면 생성
     if (!h.id) {
       h.id = 'heading-' + i;
     }
@@ -70,5 +71,42 @@
     html += '</li>';
   });
   html += '</ul>';
+
   tocList.innerHTML = html;
+  if (tocFloatList) tocFloatList.innerHTML = html;
+
+  // ===== Floating TOC: show when inline TOC scrolls out of view =====
+  var tocInline = document.getElementById('toc-inline');
+  var tocFloat = document.getElementById('toc-float');
+  if (!tocInline || !tocFloat) return;
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          tocFloat.classList.remove('is-visible');
+        } else {
+          tocFloat.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0 });
+    observer.observe(tocInline);
+  }
+
+  // ===== Highlight active heading in floating TOC =====
+  if ('IntersectionObserver' in window) {
+    var floatLinks = tocFloat.querySelectorAll('.toc__item a');
+    var headingObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          floatLinks.forEach(function(link) {
+            link.classList.toggle('is-active', link.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function(h) { headingObserver.observe(h); });
+  }
 })();

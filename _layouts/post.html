@@ -36,7 +36,7 @@ layout: default
 
     <div class="post-content">
       <!-- 목차 (Table of Contents) -->
-      <nav class="toc" aria-label="목차">
+      <nav class="toc" id="toc-inline" aria-label="목차">
         <details open>
           <summary class="toc__title">목차</summary>
           <div class="toc__list" id="toc-list"></div>
@@ -45,6 +45,14 @@ layout: default
 
       {{ content }}
     </div>
+
+    <!-- 플로팅 목차 (스크롤 시 오른쪽에 표시) -->
+    <nav class="toc-float" id="toc-float" aria-label="플로팅 목차">
+      <details open>
+        <summary class="toc-float__title">목차</summary>
+        <div class="toc-float__list" id="toc-float-list"></div>
+      </details>
+    </nav>
 
     {% if page.tags.size > 0 %}
     <div class="post-tags">
