@@ -1,29 +1,21 @@
 {% assign p = include.post %}
 <a class="postcard{% if include.featured %} postcard--featured{% endif %}" href="{{ p.url | relative_url }}">
-  <div class="postcard__media">
-    {% if p.cover %}
-      <img src="{{ p.cover | relative_url }}" alt="{{ p.title }}" loading="lazy">
-    {% else %}
-      <div class="postcard__media--placeholder">
-        <span>{{ p.title | slice: 0, 1 }}</span>
-      </div>
-    {% endif %}
-    {% if p.categories.size > 0 %}
-      <span class="postcard__badge">{{ p.categories | first }}</span>
-    {% endif %}
-  </div>
-  <div class="postcard__body">
-    <h3 class="postcard__title">{{ p.title }}</h3>
-    {% if p.excerpt_text %}
-      <p class="postcard__excerpt">{{ p.excerpt_text | strip_html | truncate: 120 }}</p>
-    {% else %}
-      <p class="postcard__excerpt">{{ p.content | strip_html | truncate: 120 }}</p>
-    {% endif %}
+  <div class="postcard__content">
     <div class="postcard__meta">
-      {% if p.date %}<time>{{ p.date | date: "%Y.%m.%d" }}</time>{% endif %}
+      {% if p.categories.size > 0 %}
+        <span class="postcard__tag">{{ p.categories | first }}</span>
+      {% endif %}
+      {% if p.date %}
+        <span class="postcard__date">{{ p.date | date: "%Y.%m.%d" }}</span>
+      {% endif %}
+    </div>
+    <h3 class="postcard__title">{{ p.title }}</h3>
+    <p class="postcard__excerpt">{{ p.content | strip_html | truncate: 140 }}</p>
+    <div class="postcard__footer">
       {% if p.tags.size > 0 %}
-        <span class="dot">·</span>
-        <span class="postcard__tag">#{{ p.tags | first }}</span>
+        {% for t in p.tags limit: 3 %}
+          <span>#{{ t }}</span>
+        {% endfor %}
       {% endif %}
     </div>
   </div>
