@@ -1,0 +1,38 @@
+# 체육관 활동 히스토리 — /workout/ 의 타임라인 섹션에 표시된다.
+# type: belt(승급) | competition(대회) | seminar(세미나) | milestone(기록) | join(등록)
+# 최신 항목을 위에 둘 필요는 없다. date 기준으로 자동 정렬된다.
+
+- date: 2024-03-02
+  type: join
+  title: "Team Deep Dive MMA 등록"
+  detail: "주 2회 주짓수 기초반으로 시작. 첫 스파링에서 3분 만에 탈진."
+
+- date: 2024-09-14
+  type: belt
+  title: "주짓수 화이트벨트 2그랄"
+  detail: "가드 리커버리와 이스케이프 위주로 6개월. 서브미션보다 버티는 걸 먼저 배웠다."
+
+- date: 2025-01-11
+  type: seminar
+  title: "레그락 시스템 세미나"
+  detail: "외부 초청 세미나 4시간. 하프가드에서 애쉬 가로피 진입까지."
+
+- date: 2025-04-20
+  type: competition
+  title: "오픈 매트 대회 화이트벨트부 참가"
+  detail: "1승 1패. 첫 경기 포인트 승, 두 번째 경기 암바로 탭. 그립 싸움에서 이미 밀렸다."
+
+- date: 2025-08-03
+  type: milestone
+  title: "무에타이 클래스 병행 시작"
+  detail: "그래플링만으로는 MMA 룰에서 거리 조절이 안 된다는 걸 인정하는 데 1년 걸렸다."
+
+- date: 2026-02-15
+  type: belt
+  title: "주짓수 블루벨트 승급"
+  detail: "2년 만에. 승급 스파링 6라운드 연속. 관장님이 '이제 시작'이라고 했다."
+
+- date: 2026-06-07
+  type: competition
+  title: "아마추어 MMA 스파링 대회 참가"
+  detail: "타격전에서 클린치 방어가 무너졌다. 이후 클린치 위주로 훈련 방향 조정."

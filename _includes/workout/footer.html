@@ -1,0 +1,21 @@
+{%- assign wk = site.workout -%}
+{%- assign logs = site.workouts -%}
+{%- assign total_min = 0 -%}
+{%- for w in logs -%}{%- assign total_min = total_min | plus: w.duration -%}{%- endfor -%}
+<footer class="wk-footer">
+  <div class="wk-container wk-footer__inner">
+    <div>
+      <p class="wk-footer__title">{{ wk.title }}</p>
+      <p class="wk-footer__tag">{{ wk.tagline }}</p>
+    </div>
+    <dl class="wk-footer__stats">
+      <div><dt>Sessions</dt><dd>{{ logs.size }}</dd></div>
+      <div><dt>Mat Time</dt><dd>{{ total_min | divided_by: 60 }}h</dd></div>
+      <div><dt>Since</dt><dd>{{ wk.since | date: "%Y.%m" }}</dd></div>
+    </dl>
+  </div>
+  <div class="wk-container wk-footer__bottom">
+    <small>&copy; {{ 'now' | date: '%Y' }} {{ wk.athlete }}. 개인 훈련 기록.</small>
+    <small>{{ wk.gym }} · {{ wk.stance }}</small>
+  </div>
+</footer>

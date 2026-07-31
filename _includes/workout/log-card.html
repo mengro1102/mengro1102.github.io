@@ -7,30 +7,30 @@
 {%- assign wd = w.date | date: "%w" | plus: 0 -%}
 {%- capture slugs -%}
   {%- for name in w.discipline -%}
-    {%- for d in site.mma.disciplines -%}
+    {%- for d in site.workout.disciplines -%}
       {%- if d.name == name %}{{ d.slug }} {% endif -%}
     {%- endfor -%}
   {%- endfor -%}
 {%- endcapture -%}
-<a class="mma-log" href="{{ w.url | relative_url }}" data-disciplines="{{ slugs | strip }}">
-  <div class="mma-log__date">
-    <span class="mma-log__day">{{ w.date | date: "%d" }}</span>
-    <span class="mma-log__month">{{ w.date | date: "%Y.%m" }}</span>
-    <span class="mma-log__weekday">{{ weekdays[wd] }}</span>
+<a class="wk-log" href="{{ w.url | relative_url }}" data-disciplines="{{ slugs | strip }}">
+  <div class="wk-log__date">
+    <span class="wk-log__day">{{ w.date | date: "%d" }}</span>
+    <span class="wk-log__month">{{ w.date | date: "%Y.%m" }}</span>
+    <span class="wk-log__weekday">{{ weekdays[wd] }}</span>
   </div>
-  <div class="mma-log__body">
-    <div class="mma-log__tags">
+  <div class="wk-log__body">
+    <div class="wk-log__tags">
       {%- for name in w.discipline -%}
-        {% include mma-badge.html name=name %}
+        {% include workout/badge.html name=name %}
       {%- endfor -%}
     </div>
-    <h3 class="mma-log__title">{{ w.title }}</h3>
-    {% if w.summary %}<p class="mma-log__summary">{{ w.summary }}</p>{% endif %}
-    <div class="mma-log__foot">
+    <h3 class="wk-log__title">{{ w.title }}</h3>
+    {% if w.summary %}<p class="wk-log__summary">{{ w.summary }}</p>{% endif %}
+    <div class="wk-log__foot">
       {% if w.duration %}<span>⏱ {{ w.duration }}분</span>{% endif %}
       {% if w.rounds %}<span>🥊 {{ w.rounds }}R 스파링</span>{% endif %}
       {% if w.location %}<span>📍 {{ w.location }}</span>{% endif %}
-      {% if w.intensity %}{% include mma-intensity.html level=w.intensity %}{% endif %}
+      {% if w.intensity %}{% include workout/intensity.html level=w.intensity %}{% endif %}
     </div>
   </div>
 </a>

@@ -1,10 +1,10 @@
 {%- comment -%}
   종목 배지 하나를 렌더링한다.
   include.name : 일지 front matter 의 discipline 값 (예: "주짓수")
-  site.mma.disciplines 에서 색상/슬러그를 찾고, 없으면 기본 강조색으로 떨어진다.
+  site.workout.disciplines 에서 색상/슬러그를 찾고, 없으면 기본 강조색으로 떨어진다.
 {%- endcomment -%}
 {%- assign d_color = "" -%}
-{%- for d in site.mma.disciplines -%}
+{%- for d in site.workout.disciplines -%}
   {%- if d.name == include.name -%}{%- assign d_color = d.color -%}{%- endif -%}
 {%- endfor -%}
-<span class="mma-badge"{% if d_color != "" %} style="color: {{ d_color }}"{% endif %}>{{ include.name }}</span>
+<span class="wk-badge"{% if d_color != "" %} style="color: {{ d_color }}"{% endif %}>{{ include.name }}</span>
