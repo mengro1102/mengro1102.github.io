@@ -29,12 +29,6 @@ title: "훈련일지"
       링과 매트 위에서 보낸 시간을 세션 단위로 남깁니다. 그날 잡은 기술, 스파링에서 깨진 지점,
       다음 훈련까지 고쳐야 할 것 — 잊어버리기 전에 적어 두는 개인 훈련 노트입니다.
     </p>
-    <div class="wk-hero__meta">
-      {% if wk.gym %}<span>GYM · <b>{{ wk.gym }}</b></span>{% endif %}
-      {% if wk.stance %}<span>STANCE · <b>{{ wk.stance }}</b></span>{% endif %}
-      {% if wk.since %}<span>SINCE · <b>{{ wk.since | date: "%Y.%m" }}</b></span>{% endif %}
-    </div>
-
     <div class="wk-scoreboard">
       <div class="wk-stat">
         <div class="wk-stat__value">{{ logs.size }}<small>회</small></div>
@@ -161,6 +155,35 @@ title: "훈련일지"
       </div>
       <span class="wk-section-head__count">{{ history.size }} events</span>
     </div>
+
+    {%- comment -%} 체육관 정보는 이 카드에만 모아 둔다 {%- endcomment -%}
+    {%- assign gym = wk.gym -%}
+    {%- if gym.name -%}
+    <div class="wk-gym">
+      <div class="wk-gym__logo">
+        {%- if gym.logo and gym.logo != "" -%}
+          <img src="{{ gym.logo | relative_url }}" alt="{{ gym.name }} 로고">
+        {%- else -%}
+          <svg viewBox="0 0 100 100" role="img" aria-label="{{ gym.short }}">
+            <polygon points="29.3,0 70.7,0 100,29.3 100,70.7 70.7,100 29.3,100 0,70.7 0,29.3" fill="#0B0B0F"/>
+            <polygon points="34,7 66,7 93,34 93,66 66,93 34,93 7,66 7,34" fill="none" stroke="#E11D48" stroke-width="3"/>
+            <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
+                  font-family="Oswald, sans-serif" font-size="26" font-weight="700" fill="#E11D48">{{ gym.short }}</text>
+          </svg>
+        {%- endif -%}
+      </div>
+      <div class="wk-gym__info">
+        <h3 class="wk-gym__name">{{ gym.name }}{% if gym.short %} <span>({{ gym.short }})</span>{% endif %}</h3>
+        {% if gym.name_ko %}<p class="wk-gym__ko">{{ gym.name_ko }}</p>{% endif %}
+        {% if gym.since %}
+        <p class="wk-gym__since">
+          <span>MEMBER SINCE</span>
+          <b>{{ gym.since | date: "%Y.%m" }}</b>
+        </p>
+        {% endif %}
+      </div>
+    </div>
+    {%- endif -%}
 
     {%- assign type_labels = "join:등록,belt:승급,competition:대회,seminar:세미나,milestone:기록" | split: "," -%}
     <ol class="wk-timeline">

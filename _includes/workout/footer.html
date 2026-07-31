@@ -1,7 +1,15 @@
+{%- comment -%}
+  훈련 로그 푸터. 체육관 정보는 넣지 않는다 (Gym History 섹션 전용).
+{%- endcomment -%}
 {%- assign wk = site.workout -%}
 {%- assign logs = site.workouts -%}
 {%- assign total_min = 0 -%}
-{%- for w in logs -%}{%- assign total_min = total_min | plus: w.duration -%}{%- endfor -%}
+{%- assign total_rounds = 0 -%}
+{%- for w in logs -%}
+  {%- assign total_min = total_min | plus: w.duration -%}
+  {%- assign total_rounds = total_rounds | plus: w.rounds -%}
+{%- endfor -%}
+{%- assign latest = logs | sort: 'date' | last -%}
 <footer class="wk-footer">
   <div class="wk-container wk-footer__inner">
     <div>
@@ -11,11 +19,11 @@
     <dl class="wk-footer__stats">
       <div><dt>Sessions</dt><dd>{{ logs.size }}</dd></div>
       <div><dt>Mat Time</dt><dd>{{ total_min | divided_by: 60 }}h</dd></div>
-      <div><dt>Since</dt><dd>{{ wk.since | date: "%Y.%m" }}</dd></div>
+      <div><dt>Rounds</dt><dd>{{ total_rounds }}</dd></div>
     </dl>
   </div>
   <div class="wk-container wk-footer__bottom">
-    <small>&copy; {{ 'now' | date: '%Y' }} {{ wk.athlete }}. 개인 훈련 기록.</small>
-    <small>{{ wk.gym }} · {{ wk.stance }}</small>
+    <small>&copy; {{ 'now' | date: '%Y' }} · 개인 훈련 기록</small>
+    {% if latest %}<small>Last session · {{ latest.date | date: "%Y.%m.%d" }}</small>{% endif %}
   </div>
 </footer>

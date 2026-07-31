@@ -27,11 +27,20 @@ _layouts/workout-log.html   → 일지 상세 페이지
 _includes/workout/          → header, footer, log-card, badge, intensity
 assets/workout/css/main.scss → 자립형 스타일시트 (리셋부터 전부 포함)
 assets/workout/js/workout.js → 테마 토글 + 종목 필터 + 표 스크롤
+assets/workout/img/         → 체육관 로고 등 이미지
 workout/index.html          → 목록 + 통계 + 체육관 히스토리
 ```
 
 모든 CSS 클래스는 `wk-` 접두사를 씁니다. 블로그 클래스와 겹치지 않습니다.
 테마 설정 저장 키도 다릅니다 (블로그 `sit-theme` / 운동 `workout-theme`).
+
+### 훈련 로그와 체육관 정보의 분리
+
+훈련 로그 화면(헤더 / 히어로 / 세션 목록 / 푸터)에는 이름·스탠스·체육관 같은
+신상 정보를 넣지 않습니다. 순수하게 훈련 기록만 남기는 자리입니다.
+
+체육관 정보는 **`Gym History` 섹션 한 곳에만** 모읍니다
+(`_config.yml` 의 `workout.gym` + `_data/gym_history.yml`).
 
 ---
 
@@ -126,7 +135,35 @@ focus:                            # 선택. 상단 '오늘의 포커스' 체크�
 
 ---
 
-## 3. 체육관 활동 히스토리 추가하기
+## 3. 체육관 정보 · 활동 히스토리
+
+체육관 관련 내용은 전부 여기서만 관리합니다. 훈련 로그 쪽에는 노출되지 않습니다.
+
+### 체육관 정보 (`_config.yml`)
+
+```yaml
+workout:
+  gym:
+    name: "Team Geumcheon"    # 영문 정식 명칭
+    short: "TGC"              # 약칭
+    name_ko: "팀 금천 MMA"     # 한글 명칭
+    logo: ""                  # 로고 경로. 비우면 TGC 옥타곤 마크가 대신 표시됨
+    since: 2024-03-01         # 등록 시점
+```
+
+### 로고 넣기
+
+1. 로고 파일을 `assets/workout/img/` 에 저장합니다 (정사각형 PNG, 512×512 이상 권장).
+2. `workout.gym.logo` 에 경로를 적습니다.
+
+```yaml
+    logo: "/assets/workout/img/tgc-logo.png"
+```
+
+값이 비어 있으면 `TGC` 글자가 들어간 옥타곤 SVG 마크가 폴백으로 렌더링되므로,
+로고 파일이 없어도 화면이 깨지지 않습니다.
+
+### 활동 내역 (`_data/gym_history.yml`)
 
 `_data/gym_history.yml` 에 항목을 추가하면 `/workout/#gym-history` 타임라인에 반영됩니다.
 날짜 기준으로 자동 정렬되므로 파일 안의 순서는 상관없습니다.
