@@ -1,0 +1,36 @@
+{%- comment -%}
+  훈련 일지 카드. include.log = _workouts 컬렉션 문서.
+  data-disciplines 에 슬러그를 넣어 두면 mma.js 필터가 이를 사용한다.
+{%- endcomment -%}
+{%- assign w = include.log -%}
+{%- assign weekdays = "일,월,화,수,목,금,토" | split: "," -%}
+{%- assign wd = w.date | date: "%w" | plus: 0 -%}
+{%- capture slugs -%}
+  {%- for name in w.discipline -%}
+    {%- for d in site.mma.disciplines -%}
+      {%- if d.name == name %}{{ d.slug }} {% endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+<a class="mma-log" href="{{ w.url | relative_url }}" data-disciplines="{{ slugs | strip }}">
+  <div class="mma-log__date">
+    <span class="mma-log__day">{{ w.date | date: "%d" }}</span>
+    <span class="mma-log__month">{{ w.date | date: "%Y.%m" }}</span>
+    <span class="mma-log__weekday">{{ weekdays[wd] }}</span>
+  </div>
+  <div class="mma-log__body">
+    <div class="mma-log__tags">
+      {%- for name in w.discipline -%}
+        {% include mma-badge.html name=name %}
+      {%- endfor -%}
+    </div>
+    <h3 class="mma-log__title">{{ w.title }}</h3>
+    {% if w.summary %}<p class="mma-log__summary">{{ w.summary }}</p>{% endif %}
+    <div class="mma-log__foot">
+      {% if w.duration %}<span>⏱ {{ w.duration }}분</span>{% endif %}
+      {% if w.rounds %}<span>🥊 {{ w.rounds }}R 스파링</span>{% endif %}
+      {% if w.location %}<span>📍 {{ w.location }}</span>{% endif %}
+      {% if w.intensity %}{% include mma-intensity.html level=w.intensity %}{% endif %}
+    </div>
+  </div>
+</a>

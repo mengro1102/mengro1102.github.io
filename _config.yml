@@ -21,12 +21,29 @@ brand:
   email: "leeroy7321@gmail.com"
   instagram: "https://instagram.com/meng._.ro"
 
+# ===== MMA / Workout tab =====
+# 운동일지 탭(/workout/)에서 사용하는 설정.
+# disciplines: 필터 칩과 종목별 통계에 사용. 일지 front matter의 discipline 값과 일치해야 한다.
+mma:
+  tagline: "케이지 위에서 배우는 것들"
+  gym: "Team Deep Dive MMA"
+  stance: "Orthodox"
+  since: 2024-03-01
+  disciplines:
+    - { name: "MMA",      slug: "mma",      color: "#E11D48" }
+    - { name: "주짓수",   slug: "bjj",      color: "#3B82F6" }
+    - { name: "무에타이", slug: "muaythai", color: "#F97316" }
+    - { name: "레슬링",   slug: "wrestling", color: "#10B981" }
+    - { name: "복싱",     slug: "boxing",   color: "#A855F7" }
+    - { name: "컨디셔닝", slug: "strength", color: "#EAB308" }
+
 # ===== Navigation tabs (header) =====
 nav:
   - { title: "홈",         url: "/" }
   - { title: "소개",       url: "/about/" }
   - { title: "포스트",     url: "/posts/" }
   - { title: "기술개념",   url: "/concepts/" }
+  - { title: "운동일지",   url: "/workout/" }
   - { title: "연락처",     url: "/contact/" }
 
 # ===== Collections =====
@@ -37,6 +54,9 @@ collections:
   concepts:
     output: true
     permalink: /concepts/:name/
+  workouts:
+    output: true
+    permalink: /workout/:name/
 
 # ===== Front-matter defaults =====
 defaults:
@@ -52,6 +72,13 @@ defaults:
       collection_name: concepts
       collection_label: "기술개념"
       collection_url: "/concepts/"
+  - scope: { path: "", type: "workouts" }
+    values:
+      layout: workout
+      skin: mma
+      collection_name: workouts
+      collection_label: "운동일지"
+      collection_url: "/workout/"
   - scope: { path: "", type: "pages" }
     values:
       layout: page

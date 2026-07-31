@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ site.lang }}"{% if page.skin %} data-skin="{{ page.skin }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,6 +17,12 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+
+  {% if page.skin == 'mma' %}
+  <!-- MMA skin: 운동일지 탭 전용 테마 (본문 폰트/토큰/컴포넌트를 별도로 덮어쓴다) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="{{ '/assets/css/mma.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+  {% endif %}
 
   <!-- KaTeX for math rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
@@ -63,5 +69,8 @@
   {% include footer.html %}
 
   <script defer src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+  {% if page.skin == 'mma' %}
+  <script defer src="{{ '/assets/js/mma.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+  {% endif %}
 </body>
 </html>
