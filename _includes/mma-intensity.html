@@ -1,0 +1,16 @@
+{%- comment -%}
+  강도 게이지 (1~5). include.level = 정수, include.label = true 면 텍스트 라벨도 표시.
+{%- endcomment -%}
+{%- assign lvl = include.level | default: 0 | plus: 0 -%}
+{%- assign labels = "회복,가벼움,보통,높음,한계" | split: "," -%}
+<span class="mma-intensity" title="강도 {{ lvl }}/5">
+  <span class="mma-intensity__bars" style="--lvl: var(--lvl-{{ lvl }})">
+    {%- for i in (1..5) -%}
+      <span class="mma-intensity__bar{% if i <= lvl %} is-on{% endif %}"></span>
+    {%- endfor -%}
+  </span>
+  {%- if include.label and lvl > 0 -%}
+    {%- assign idx = lvl | minus: 1 -%}
+    <span class="mma-intensity__label">{{ labels[idx] }}</span>
+  {%- endif -%}
+</span>
