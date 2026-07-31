@@ -41,17 +41,28 @@ nav:
 workout:
   title: "MMA Training Log"
   tagline: "케이지 위에서 배우는 것들"
-  description: "주짓수, 무에타이, 레슬링, 스파링까지 — 매트 위에서 보낸 시간과 체육관 활동을 세션 단위로 기록합니다."
+  description: "링과 매트 위에서 보낸 시간을 곱씹어 개인적인 생각을 정리하는 운동 노트입니다."
   # 별도 도메인으로 옮기면 여기만 새 주소로 바꾼다.
   url: "https://mengro1102.github.io"
   baseurl: "/workout"
+  # /workout/ 은 두 페이지로 나뉜다.
+  #   /workout/      → 개인기록 (훈련 로그)
+  #   /workout/gym/  → 체육관 정보 (팀금천)
   nav:
-    - { title: "훈련일지",   url: "/workout/" }
-    - { title: "체육관 활동", url: "/workout/#gym-history" }
+    - { title: "개인기록",    url: "/workout/" }
+    - { title: "체육관 정보", url: "/workout/gym/" }
+
+  # ---- 세션 카테고리 ----
+  # 종목(주짓수/무에타이…)이 아니라 '타격 / 그래플링' 축으로 나눈다.
+  # 일지 front matter 의 category 값과 이름이 정확히 일치해야 한다.
+  # 한 세션이 두 축에 걸치면 둘 다 적는다: category: ["타격", "그래플링"]
+  categories:
+    - { name: "타격",     slug: "striking",     color: "#E11D48" }
+    - { name: "그래플링", slug: "grappling",    color: "#3B82F6" }
+    - { name: "컨디셔닝", slug: "conditioning", color: "#EAB308" }
 
   # ---- 체육관 정보 ----
-  # 'Gym History' 섹션에서만 쓴다. 헤더/히어로/푸터 등 훈련 로그 쪽에는
-  # 체육관 정보를 노출하지 않는다 — 로그와 체육관은 분리해서 보여준다.
+  # /workout/gym/ 에서만 쓴다. 개인기록 쪽에는 체육관 정보를 노출하지 않는다.
   gym:
     name: "Team Geumcheon"
     short: "TGC"
@@ -60,14 +71,6 @@ workout:
     # 비워 두면 TGC 옥타곤 마크가 대신 나온다.
     logo: ""
     since: 2024-03-01
-  # 필터 칩과 종목별 통계에 사용. 일지 front matter 의 discipline 값과 일치해야 한다.
-  disciplines:
-    - { name: "MMA",      slug: "mma",      color: "#E11D48" }
-    - { name: "주짓수",   slug: "bjj",      color: "#3B82F6" }
-    - { name: "무에타이", slug: "muaythai", color: "#F97316" }
-    - { name: "레슬링",   slug: "wrestling", color: "#10B981" }
-    - { name: "복싱",     slug: "boxing",   color: "#A855F7" }
-    - { name: "컨디셔닝", slug: "strength", color: "#EAB308" }
 
 # ===== Collections =====
 collections:
@@ -79,7 +82,8 @@ collections:
     permalink: /concepts/:name/
   workouts:
     output: true
-    permalink: /workout/:name/
+    # /workout/gym/ 페이지와 겹치지 않도록 로그는 /workout/log/ 아래에 둔다.
+    permalink: /workout/log/:name/
 
 # ===== Front-matter defaults =====
 defaults:
@@ -98,7 +102,7 @@ defaults:
   - scope: { path: "", type: "workouts" }
     values:
       layout: workout-log
-      collection_label: "훈련일지"
+      collection_label: "개인기록"
       collection_url: "/workout/"
   - scope: { path: "", type: "pages" }
     values:
@@ -130,6 +134,7 @@ exclude:
   - Gemfile.lock
   - README.md
   - WORKOUT.md
+  - WORKOUT-PROMPT.md
   - LICENSE
   - .gitignore
   - .editorconfig

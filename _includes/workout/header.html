@@ -15,8 +15,19 @@
 
     <nav class="wk-nav" aria-label="주 메뉴">
       <ul>
+        {%- comment -%}
+          개인기록(/workout/)은 로그 상세(/workout/log/…)까지 활성으로 본다.
+          체육관 정보(/workout/gym/)가 더 구체적이므로 먼저 판정한다.
+        {%- endcomment -%}
+        {%- assign current = page.url -%}
         {%- for item in wk.nav -%}
-        <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+          {%- assign active = false -%}
+          {%- if current == item.url -%}
+            {%- assign active = true -%}
+          {%- elsif item.url == "/workout/" and current contains "/workout/log/" -%}
+            {%- assign active = true -%}
+          {%- endif -%}
+        <li><a href="{{ item.url | relative_url }}"{% if active %} class="is-active" aria-current="page"{% endif %}>{{ item.title }}</a></li>
         {%- endfor -%}
       </ul>
     </nav>

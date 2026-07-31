@@ -1,6 +1,6 @@
 ---
 layout: workout-base
-title: "훈련일지"
+title: "개인기록"
 ---
 
 {%- assign wk = site.workout -%}
@@ -23,12 +23,12 @@ title: "훈련일지"
 
 <div class="wk-hero">
   <div class="wk-container wk-hero__inner">
-    <span class="wk-eyebrow">Training Log · MMA</span>
+    <span class="wk-eyebrow">Personal Log</span>
     <h1>매트 위에서<br><span class="accent">쌓아 올린</span> <span class="outline">기록</span></h1>
     <p class="wk-hero__lead">
-      링과 매트 위에서 보낸 시간을 세션 단위로 남깁니다. 그날 잡은 기술, 스파링에서 깨진 지점,
-      다음 훈련까지 고쳐야 할 것 — 잊어버리기 전에 적어 두는 개인 훈련 노트입니다.
+      링과 매트 위에서 보낸 시간을 곱씹어 개인적인 생각을 정리하는 운동 노트입니다.
     </p>
+
     <div class="wk-scoreboard">
       <div class="wk-stat">
         <div class="wk-stat__value">{{ logs.size }}<small>회</small></div>
@@ -50,51 +50,53 @@ title: "훈련일지"
   </div>
 </div>
 
-{%- comment -%} ===== 종목 분포 ===== {%- endcomment -%}
+{%- comment -%} ===== 카테고리 분포 (타격 / 그래플링 축) ===== {%- endcomment -%}
+{%- if logs.size > 0 -%}
 <section class="wk-section wk-section--alt">
   <div class="wk-container">
     <div class="wk-section-head">
       <div>
-        <h2>Discipline Mix</h2>
-        <p>종목별 세션 수 — 어느 한쪽으로 치우치지 않게 확인하는 용도</p>
+        <h2>Training Balance</h2>
+        <p>타격과 그래플링 중 한쪽으로 치우치지 않았는지 확인하는 용도</p>
       </div>
       <span class="wk-section-head__count">{{ logs.size }} sessions</span>
     </div>
 
     {%- comment -%} 최대값을 먼저 구해 바 길이를 정규화한다 {%- endcomment -%}
     {%- assign max_count = 1 -%}
-    {%- for d in wk.disciplines -%}
-      {%- assign c = 0 -%}
+    {%- for c in wk.categories -%}
+      {%- assign n = 0 -%}
       {%- for w in logs -%}
-        {%- if w.discipline contains d.name -%}{%- assign c = c | plus: 1 -%}{%- endif -%}
+        {%- if w.category contains c.name -%}{%- assign n = n | plus: 1 -%}{%- endif -%}
       {%- endfor -%}
-      {%- if c > max_count -%}{%- assign max_count = c -%}{%- endif -%}
+      {%- if n > max_count -%}{%- assign max_count = n -%}{%- endif -%}
     {%- endfor -%}
 
     <div class="wk-mix">
-      {%- for d in wk.disciplines -%}
-        {%- assign c = 0 -%}
+      {%- for c in wk.categories -%}
+        {%- assign n = 0 -%}
         {%- assign mins = 0 -%}
         {%- for w in logs -%}
-          {%- if w.discipline contains d.name -%}
-            {%- assign c = c | plus: 1 -%}
+          {%- if w.category contains c.name -%}
+            {%- assign n = n | plus: 1 -%}
             {%- assign mins = mins | plus: w.duration -%}
           {%- endif -%}
         {%- endfor -%}
-        {%- assign pct = c | times: 100 | divided_by: max_count -%}
+        {%- assign pct = n | times: 100 | divided_by: max_count -%}
         <div class="wk-mix__row">
-          <span class="wk-mix__name">{{ d.name }}</span>
+          <span class="wk-mix__name">{{ c.name }}</span>
           <span class="wk-mix__track">
-            {%- if c > 0 -%}
-            <span class="wk-mix__fill" style="width: {{ pct }}%; background: {{ d.color }}"></span>
+            {%- if n > 0 -%}
+            <span class="wk-mix__fill" style="width: {{ pct }}%; background: {{ c.color }}"></span>
             {%- endif -%}
           </span>
-          <span class="wk-mix__num">{{ c }}회 · {{ mins | divided_by: 60 }}h</span>
+          <span class="wk-mix__num">{{ n }}회 · {{ mins | divided_by: 60 }}h</span>
         </div>
       {%- endfor -%}
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {%- comment -%} ===== 일지 목록 ===== {%- endcomment -%}
 <section class="wk-section">
@@ -106,18 +108,19 @@ title: "훈련일지"
       </div>
     </div>
 
-    <div class="wk-filters" role="group" aria-label="종목 필터">
+    {%- if logs.size > 0 -%}
+    <div class="wk-filters" role="group" aria-label="카테고리 필터">
       <button type="button" class="wk-chip is-active" data-filter="all">
         전체<span class="wk-chip__count">{{ logs.size }}</span>
       </button>
-      {%- for d in wk.disciplines -%}
-        {%- assign c = 0 -%}
+      {%- for c in wk.categories -%}
+        {%- assign n = 0 -%}
         {%- for w in logs -%}
-          {%- if w.discipline contains d.name -%}{%- assign c = c | plus: 1 -%}{%- endif -%}
+          {%- if w.category contains c.name -%}{%- assign n = n | plus: 1 -%}{%- endif -%}
         {%- endfor -%}
-        {%- if c > 0 -%}
-        <button type="button" class="wk-chip" data-filter="{{ d.slug }}">
-          {{ d.name }}<span class="wk-chip__count">{{ c }}</span>
+        {%- if n > 0 -%}
+        <button type="button" class="wk-chip" data-filter="{{ c.slug }}">
+          {{ c.name }}<span class="wk-chip__count">{{ n }}</span>
         </button>
         {%- endif -%}
       {%- endfor -%}
@@ -130,82 +133,14 @@ title: "훈련일지"
     </div>
 
     <div class="wk-empty" id="wk-log-empty" hidden>
-      <strong>해당 종목의 기록이 없습니다</strong>
+      <strong>해당 카테고리의 기록이 없습니다</strong>
       다른 필터를 선택해 보세요.
     </div>
-
-    {%- if logs.size == 0 -%}
+    {%- else -%}
     <div class="wk-empty">
       <strong>아직 기록이 없습니다</strong>
-      <code>_workouts/</code> 폴더에 첫 훈련 일지를 추가해 보세요.
+      <code>_workouts/</code> 폴더에 첫 훈련 일지를 추가하면 이곳과 위쪽 통계에 자동으로 반영됩니다.
     </div>
     {%- endif -%}
   </div>
 </section>
-
-{%- comment -%} ===== 체육관 활동 히스토리 ===== {%- endcomment -%}
-{%- assign history = site.data.gym_history | sort: 'date' | reverse -%}
-{%- if history.size > 0 -%}
-<section class="wk-section wk-section--alt" id="gym-history">
-  <div class="wk-container">
-    <div class="wk-section-head">
-      <div>
-        <h2>Gym History</h2>
-        <p>승급, 대회, 세미나 — 체육관에서의 활동 내역</p>
-      </div>
-      <span class="wk-section-head__count">{{ history.size }} events</span>
-    </div>
-
-    {%- comment -%} 체육관 정보는 이 카드에만 모아 둔다 {%- endcomment -%}
-    {%- assign gym = wk.gym -%}
-    {%- if gym.name -%}
-    <div class="wk-gym">
-      <div class="wk-gym__logo">
-        {%- if gym.logo and gym.logo != "" -%}
-          <img src="{{ gym.logo | relative_url }}" alt="{{ gym.name }} 로고">
-        {%- else -%}
-          <svg viewBox="0 0 100 100" role="img" aria-label="{{ gym.short }}">
-            <polygon points="29.3,0 70.7,0 100,29.3 100,70.7 70.7,100 29.3,100 0,70.7 0,29.3" fill="#0B0B0F"/>
-            <polygon points="34,7 66,7 93,34 93,66 66,93 34,93 7,66 7,34" fill="none" stroke="#E11D48" stroke-width="3"/>
-            <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
-                  font-family="Oswald, sans-serif" font-size="26" font-weight="700" fill="#E11D48">{{ gym.short }}</text>
-          </svg>
-        {%- endif -%}
-      </div>
-      <div class="wk-gym__info">
-        <h3 class="wk-gym__name">{{ gym.name }}{% if gym.short %} <span>({{ gym.short }})</span>{% endif %}</h3>
-        {% if gym.name_ko %}<p class="wk-gym__ko">{{ gym.name_ko }}</p>{% endif %}
-        {% if gym.since %}
-        <p class="wk-gym__since">
-          <span>MEMBER SINCE</span>
-          <b>{{ gym.since | date: "%Y.%m" }}</b>
-        </p>
-        {% endif %}
-      </div>
-    </div>
-    {%- endif -%}
-
-    {%- assign type_labels = "join:등록,belt:승급,competition:대회,seminar:세미나,milestone:기록" | split: "," -%}
-    <ol class="wk-timeline">
-      {%- for ev in history -%}
-        {%- assign label = ev.type -%}
-        {%- for pair in type_labels -%}
-          {%- assign kv = pair | split: ":" -%}
-          {%- if kv[0] == ev.type -%}{%- assign label = kv[1] -%}{%- endif -%}
-        {%- endfor -%}
-        <li class="wk-timeline__item wk-timeline__item--{{ ev.type }}">
-          <div class="wk-timeline__marker" aria-hidden="true"></div>
-          <div class="wk-timeline__body">
-            <div class="wk-timeline__meta">
-              <time datetime="{{ ev.date | date_to_xmlschema }}">{{ ev.date | date: "%Y.%m.%d" }}</time>
-              <span class="wk-timeline__type">{{ label }}</span>
-            </div>
-            <h3 class="wk-timeline__title">{{ ev.title }}</h3>
-            {% if ev.detail %}<p class="wk-timeline__detail">{{ ev.detail }}</p>{% endif %}
-          </div>
-        </li>
-      {%- endfor -%}
-    </ol>
-  </div>
-</section>
-{%- endif -%}

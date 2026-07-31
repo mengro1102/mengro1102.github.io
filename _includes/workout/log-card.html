@@ -1,18 +1,18 @@
 {%- comment -%}
   훈련 일지 카드. include.log = _workouts 컬렉션 문서.
-  data-disciplines 에 슬러그를 넣어 두면 mma.js 필터가 이를 사용한다.
+  data-categories 에 슬러그를 넣어 두면 workout.js 필터가 이를 사용한다.
 {%- endcomment -%}
 {%- assign w = include.log -%}
 {%- assign weekdays = "일,월,화,수,목,금,토" | split: "," -%}
 {%- assign wd = w.date | date: "%w" | plus: 0 -%}
 {%- capture slugs -%}
-  {%- for name in w.discipline -%}
-    {%- for d in site.workout.disciplines -%}
+  {%- for name in w.category -%}
+    {%- for d in site.workout.categories -%}
       {%- if d.name == name %}{{ d.slug }} {% endif -%}
     {%- endfor -%}
   {%- endfor -%}
 {%- endcapture -%}
-<a class="wk-log" href="{{ w.url | relative_url }}" data-disciplines="{{ slugs | strip }}">
+<a class="wk-log" href="{{ w.url | relative_url }}" data-categories="{{ slugs | strip }}">
   <div class="wk-log__date">
     <span class="wk-log__day">{{ w.date | date: "%d" }}</span>
     <span class="wk-log__month">{{ w.date | date: "%Y.%m" }}</span>
@@ -20,7 +20,7 @@
   </div>
   <div class="wk-log__body">
     <div class="wk-log__tags">
-      {%- for name in w.discipline -%}
+      {%- for name in w.category -%}
         {% include workout/badge.html name=name %}
       {%- endfor -%}
     </div>

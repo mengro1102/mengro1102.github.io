@@ -42,7 +42,7 @@
   function apply(filter) {
     var shown = 0;
     cards.forEach(function (card) {
-      var slugs = (card.getAttribute('data-disciplines') || '').split(/\s+/);
+      var slugs = (card.getAttribute('data-categories') || '').split(/\s+/);
       var match = filter === 'all' || slugs.indexOf(filter) !== -1;
       card.hidden = !match;
       if (match) shown++;
