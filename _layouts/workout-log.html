@@ -14,13 +14,22 @@ layout: workout-base
       </div>
 
       <div class="wk-article__tags">
-        {%- for name in page.discipline -%}
+        {%- for name in page.category -%}
           {% include workout/badge.html name=name %}
         {%- endfor -%}
       </div>
 
       <h1 class="wk-article__title">{{ page.title }}</h1>
 
+      {%- comment -%}
+        지표를 하나도 적지 않은 일지도 있으므로, 채워진 항목이 있을 때만 표를 그린다.
+        (빈 컨테이너만 남으면 테두리 상자가 덩그러니 보인다)
+      {%- endcomment -%}
+      {%- assign has_vitals = false -%}
+      {%- if page.duration or page.intensity or page.rounds or page.weight or page.condition or page.location -%}
+        {%- assign has_vitals = true -%}
+      {%- endif -%}
+      {% if has_vitals %}
       <div class="wk-vitals">
         {% if page.duration %}
         <div class="wk-vital">
@@ -59,6 +68,7 @@ layout: workout-base
         </div>
         {% endif %}
       </div>
+      {% endif %}
     </div>
   </header>
 

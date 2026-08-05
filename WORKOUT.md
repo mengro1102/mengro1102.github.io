@@ -5,7 +5,8 @@
 | 주소 | 용도 | 테마 |
 |------|------|------|
 | `mengro1102.github.io/` | AI 엔지니어 개인 블로그 · 공부/이력 정리 | Aurora Purple |
-| `mengro1102.github.io/workout/` | 개인 운동 기록 · 체육관 활동 히스토리 | Cage Red (MMA) |
+| `mengro1102.github.io/workout/` | 개인기록 (훈련 로그) | Cage Red (MMA) |
+| `mengro1102.github.io/workout/gym/` | 체육관 정보 (팀금천) | Cage Red (MMA) |
 
 두 사이트는 **레이아웃, CSS, JS, 설정, 헤더/푸터를 하나도 공유하지 않습니다.**
 블로그 어디에도 `/workout/` 으로 가는 링크가 없으므로, 주소를 직접 아는 사람만 들어올 수 있습니다.
@@ -26,9 +27,10 @@ _layouts/workout-base.html  → 최상위 셸 (head/헤더/푸터/스크립트)
 _layouts/workout-log.html   → 일지 상세 페이지
 _includes/workout/          → header, footer, log-card, badge, intensity
 assets/workout/css/main.scss → 자립형 스타일시트 (리셋부터 전부 포함)
-assets/workout/js/workout.js → 테마 토글 + 종목 필터 + 표 스크롤
+assets/workout/js/workout.js → 테마 토글 + 카테고리 필터 + 표 스크롤
 assets/workout/img/         → 체육관 로고 등 이미지
-workout/index.html          → 목록 + 통계 + 체육관 히스토리
+workout/index.html          → 개인기록 (로그 목록 + 통계 + 필터)
+workout/gym/index.html      → 체육관 정보 (체육관 카드 + 활동 타임라인)
 ```
 
 모든 CSS 클래스는 `wk-` 접두사를 씁니다. 블로그 클래스와 겹치지 않습니다.
@@ -36,10 +38,10 @@ workout/index.html          → 목록 + 통계 + 체육관 히스토리
 
 ### 훈련 로그와 체육관 정보의 분리
 
-훈련 로그 화면(헤더 / 히어로 / 세션 목록 / 푸터)에는 이름·스탠스·체육관 같은
-신상 정보를 넣지 않습니다. 순수하게 훈련 기록만 남기는 자리입니다.
+개인기록 페이지(`/workout/`)에는 이름·스탠스·체육관 같은 신상 정보를 넣지 않습니다.
+순수하게 훈련 기록만 남기는 자리입니다.
 
-체육관 정보는 **`Gym History` 섹션 한 곳에만** 모읍니다
+체육관 정보는 **`/workout/gym/` 한 페이지에만** 모읍니다
 (`_config.yml` 의 `workout.gym` + `_data/gym_history.yml`).
 
 ---
@@ -52,7 +54,7 @@ workout/index.html          → 목록 + 통계 + 체육관 히스토리
 |------|------|
 | 위치 | `_workouts/` 폴더 |
 | 파일명 | `YYYY-MM-DD-영문-슬러그.md` (예: `2026-08-03-bjj-halfguard.md`) |
-| URL | `/workout/YYYY-MM-DD-영문-슬러그/` (파일명이 그대로 URL) |
+| URL | `/workout/log/YYYY-MM-DD-영문-슬러그/` (파일명이 그대로 URL) |
 | 레이아웃 | 지정 불필요 — `_config.yml` 기본값으로 `layout: workout-log` 자동 적용 |
 
 ### Front matter
@@ -61,14 +63,14 @@ workout/index.html          → 목록 + 통계 + 체육관 히스토리
 ---
 title: "그날 배운 것 한 줄로"      # 필수. 날짜가 아니라 '깨달은 것'을 제목으로
 date: 2026-08-03                  # 필수. 정렬·통계 기준
-discipline: ["주짓수", "MMA"]     # 필수. 아래 표의 이름과 정확히 일치해야 함
+category: ["그래플링"]            # 필수. 아래 표의 이름과 정확히 일치해야 함
 duration: 90                      # 필수(통계용). 분 단위 정수
 intensity: 3                      # 1~5. 게이지와 색상에 사용
 rounds: 4                         # 선택. 스파링 라운드 수 (누적 통계에 합산)
 location: "본관 매트"             # 선택
 condition: "양호"                 # 선택. 그날 몸 상태 한 단어
 weight: 74.2                      # 선택. kg
-tags: [BJJ, 가드, 스파링]          # 선택. 하단 태그 칩
+tags: [주짓수, 가드, 스파링]        # 선택. 세부 종목·기술 키워드
 summary: "카드에 보일 2줄 요약"    # 목록 카드 요약 + 상세 페이지 meta description
 focus:                            # 선택. 상단 '오늘의 포커스' 체크리스트
   - "오늘 의식적으로 신경 쓴 것 1"
@@ -77,22 +79,24 @@ focus:                            # 선택. 상단 '오늘의 포커스' 체크�
 ```
 
 파일 하나만 추가하면 상단 스코어보드(누적 세션/매트 타임/스파링 라운드/이번 달),
-종목 분포 바, 필터 칩 개수가 **전부 자동으로 갱신됩니다.**
+카테고리 분포 바, 필터 칩 개수가 **전부 자동으로 갱신됩니다.**
 
-### discipline 에 쓸 수 있는 값
+메모를 일지로 정리하는 LLM 프롬프트는 `WORKOUT-PROMPT.md` 에 따로 있습니다.
 
-`_config.yml` 의 `workout.disciplines` 에 정의된 이름만 배지 색상과 필터가 붙습니다.
+### category — 타격 / 그래플링 축
 
-| 이름 | 슬러그 | 색상 |
-|------|--------|------|
-| MMA | `mma` | `#E11D48` |
-| 주짓수 | `bjj` | `#3B82F6` |
-| 무에타이 | `muaythai` | `#F97316` |
-| 레슬링 | `wrestling` | `#10B981` |
-| 복싱 | `boxing` | `#A855F7` |
-| 컨디셔닝 | `strength` | `#EAB308` |
+세부 종목(주짓수·무에타이·레슬링…)이 아니라 **타격 / 그래플링** 축으로 나눕니다.
+세부 종목명은 `tags` 나 본문에 적습니다.
 
-종목을 새로 추가하려면 `workout.disciplines` 에 `{ name, slug, color }` 한 줄을 추가하면
+| 값 | 해당하는 훈련 | 색상 |
+|----|---------------|------|
+| `타격` | 복싱, 무에타이, 킥복싱, 미트, 스탠딩 스파링 | `#E11D48` |
+| `그래플링` | 주짓수, 레슬링, 클린치, 그라운드, 서브미션 | `#3B82F6` |
+| `컨디셔닝` | 웨이트, 인터벌, 체력 훈련, 회복 세션 | `#EAB308` |
+
+한 세션이 두 축에 걸치면 둘 다 적습니다: `category: ["타격", "그래플링"]`
+
+축을 바꾸거나 늘리려면 `_config.yml` 의 `workout.categories` 를 수정하면
 필터 칩과 분포 바에 자동 반영됩니다.
 
 ### intensity 등급
@@ -165,7 +169,8 @@ workout:
 
 ### 활동 내역 (`_data/gym_history.yml`)
 
-`_data/gym_history.yml` 에 항목을 추가하면 `/workout/#gym-history` 타임라인에 반영됩니다.
+`_data/gym_history.yml` 에 항목을 추가하면 `/workout/gym/` 타임라인에 반영됩니다.
+항목이 하나도 없으면 빈 상태 안내가 대신 표시됩니다.
 날짜 기준으로 자동 정렬되므로 파일 안의 순서는 상관없습니다.
 
 ```yaml
@@ -179,7 +184,81 @@ workout:
 
 ---
 
-## 4. 나중에 별도 도메인으로 분리하기
+## 4. 글 쓰고 고치는 방법
+
+VSCode 를 열고 저장소를 클론하는 것 말고도, 상황에 따라 더 가벼운 방법이 있습니다.
+전부 같은 git 저장소를 건드리므로 섞어 써도 충돌하지 않습니다.
+
+### 추천 순서
+
+| 상황 | 방법 | 준비물 |
+|------|------|--------|
+| 문장 몇 줄 고치기 | **GitHub 웹 편집기** | 없음 |
+| 새 일지 작성 / 여러 파일 | **github.dev** (브라우저 VSCode) | 없음 |
+| 폰에서 급하게 | GitHub 모바일 앱 | 앱 설치 |
+| 매일 쓰는 습관을 들이고 싶을 때 | Obsidian + Git 플러그인 | 앱 + 플러그인 |
+
+### 1) GitHub 웹 편집기 — 한두 줄 고칠 때
+
+고칠 파일을 GitHub 에서 연 다음 연필 아이콘(`Edit this file`)을 누르면 바로 수정됩니다.
+`Commit changes` 를 누르면 끝. 푸시하면 1~2분 뒤 사이트에 반영됩니다.
+
+가장 빠르지만 미리보기가 없어서 마크다운 표처럼 형식이 복잡한 부분에는 불편합니다.
+
+### 2) github.dev — 사실상 브라우저에서 도는 VSCode (추천)
+
+저장소 페이지에서 **키보드로 `.` (마침표) 한 번**만 누르면 됩니다.
+주소창의 `github.com` 을 `github.dev` 로 바꿔도 같습니다.
+
+```
+https://github.dev/mengro1102/mengro1102.github.io
+```
+
+- 설치·클론 없이 브라우저에서 VSCode 가 그대로 열립니다
+- 파일 트리, 검색, 마크다운 미리보기(`Ctrl/Cmd + Shift + V`) 다 됩니다
+- 왼쪽 소스 제어 탭에서 커밋 + 푸시까지 한 번에
+- 아이패드에서도 동작합니다
+
+빌드나 터미널은 못 돌리지만, 마크다운 글쓰기에는 부족한 게 없습니다.
+**일지 작성은 이 방법을 기본으로 쓰는 걸 권합니다.**
+
+### 3) 브랜치를 쓰면 발행 전에 검토할 수 있습니다
+
+바로 `main` 에 커밋하면 곧장 사이트에 올라갑니다.
+개인적인 생각을 적은 글을 한 번 더 보고 올리고 싶다면, 웹 편집기에서 커밋할 때
+`Create a new branch` 를 고르고 PR 을 열면 됩니다. 마음에 들 때 머지하면 그때 발행됩니다.
+
+### 4) 초안을 숨겨 두기
+
+front matter 에 `published: false` 를 넣으면 파일은 저장소에 있되 사이트에는 나오지 않습니다.
+
+```yaml
+---
+title: "아직 정리 중인 일지"
+date: 2026-08-03
+published: false
+---
+```
+
+다 쓰고 그 줄만 지우면 발행됩니다. 통계에도 잡히지 않습니다.
+
+### 5) 로컬에서 미리 보고 싶을 때만 VSCode
+
+레이아웃이나 CSS 를 건드릴 때는 로컬이 편합니다. 글만 쓸 때는 필요 없습니다.
+
+```bash
+bundle exec jekyll serve --livereload
+```
+
+### 참고 — CMS 는 권하지 않습니다
+
+Decap CMS(구 Netlify CMS) 같은 걸 붙이면 관리자 화면에서 글을 쓸 수 있지만,
+GitHub Pages 는 서버가 없어서 **OAuth 중계 서버를 따로 띄워야 합니다.**
+글 몇 편 쓰자고 유지할 인프라가 늘어나므로, github.dev 로 충분합니다.
+
+---
+
+## 5. 나중에 별도 도메인으로 분리하기
 
 운동 사이트를 자체 도메인(예: `mma.example.com`)으로 떼어낼 때의 절차입니다.
 경계가 이미 분리되어 있으므로 파일을 옮기고 설정 몇 줄만 바꾸면 됩니다.
@@ -191,6 +270,7 @@ workout:
 | 현재 위치 | 새 저장소 위치 |
 |-----------|----------------|
 | `workout/index.html` | `index.html` |
+| `workout/gym/index.html` | `gym/index.html` |
 | `_layouts/workout-base.html` | `_layouts/default.html` |
 | `_layouts/workout-log.html` | `_layouts/workout-log.html` (그대로) |
 | `_includes/workout/*` | `_includes/*` |
@@ -213,7 +293,7 @@ timezone: Asia/Seoul
 collections:
   workouts:
     output: true
-    permalink: /log/:name/        # 기존 /workout/:name/ 에서 workout 층 제거
+    permalink: /log/:name/        # 기존 /workout/log/:name/ 에서 workout 층 제거
 
 defaults:
   - scope: { path: "", type: "workouts" }
@@ -249,7 +329,7 @@ workout:
 
 ---
 
-## 5. 검색 노출 차단 (원할 경우)
+## 6. 검색 노출 차단 (원할 경우)
 
 현재는 검색엔진 색인을 허용하고 있습니다. 주소를 아는 사람만 들어오게 하려면
 `_layouts/workout-base.html` 의 `<head>` 에 아래를 추가하고,
@@ -263,11 +343,12 @@ workout:
 
 ---
 
-## 6. 로컬 확인
+## 7. 로컬 확인
 
 ```bash
 bundle install
 bundle exec jekyll serve
-# 블로그   → http://localhost:4000/
-# 운동일지 → http://localhost:4000/workout/
+# 블로그      → http://localhost:4000/
+# 개인기록    → http://localhost:4000/workout/
+# 체육관 정보 → http://localhost:4000/workout/gym/
 ```
