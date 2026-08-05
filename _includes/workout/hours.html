@@ -1,0 +1,12 @@
+{%- comment -%}
+  분 단위 정수를 "1.5" 같은 시간 숫자로 바꾼다. 단위(시간/h)는 호출부에서 붙인다.
+  Liquid 는 정수 나눗셈만 되므로, 10을 곱해 계산한 뒤 다시 쪼개서 소수 첫째 자리를 살린다.
+  (그냥 60으로 나누면 90분이 "1시간"이 되어 30분이 사라진다)
+
+  include.minutes : 분 단위 정수. 비어 있으면 0으로 본다.
+{%- endcomment -%}
+{%- assign _m = include.minutes | default: 0 | plus: 0 -%}
+{%- assign _tenths = _m | times: 10 | divided_by: 60 -%}
+{%- assign _int = _tenths | divided_by: 10 -%}
+{%- assign _dec = _tenths | modulo: 10 -%}
+{{- _int }}{% if _dec > 0 %}.{{ _dec }}{% endif -%}

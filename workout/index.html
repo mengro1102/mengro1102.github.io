@@ -35,7 +35,7 @@ title: "개인기록"
         <span class="wk-stat__label">Total Sessions</span>
       </div>
       <div class="wk-stat">
-        <div class="wk-stat__value">{{ total_hours }}<small>시간</small></div>
+        <div class="wk-stat__value">{% include workout/hours.html minutes=total_min %}<small>시간</small></div>
         <span class="wk-stat__label">Mat Time</span>
       </div>
       <div class="wk-stat">
@@ -57,7 +57,6 @@ title: "개인기록"
     <div class="wk-section-head">
       <div>
         <h2>Training Balance</h2>
-        <p>타격과 그래플링 중 한쪽으로 치우치지 않았는지 확인하는 용도</p>
       </div>
       <span class="wk-section-head__count">{{ logs.size }} sessions</span>
     </div>
@@ -90,10 +89,51 @@ title: "개인기록"
             <span class="wk-mix__fill" style="width: {{ pct }}%; background: {{ c.color }}"></span>
             {%- endif -%}
           </span>
-          <span class="wk-mix__num">{{ n }}회 · {{ mins | divided_by: 60 }}h</span>
+          <span class="wk-mix__num">{{ n }}회 · {% include workout/hours.html minutes=mins %}h</span>
         </div>
       {%- endfor -%}
     </div>
+
+    {%- comment -%}
+      ===== 최근 30일 훈련 블록 (깃허브 잔디 형태) =====
+      브라우저의 '오늘'을 기준으로 30일 창을 잡아야 하므로 그리드는 JS 가 그린다.
+      Liquid 로 미리 그리면 마지막 빌드 시점에 창이 고정되어, 한동안 푸시가 없으면
+      "최근 30일"이 실제로는 몇 주 전 구간을 보여주게 된다.
+    {%- endcomment -%}
+    <div class="wk-activity" id="wk-activity" data-days="30">
+      <div class="wk-activity__head">
+        <h3 class="wk-activity__title">최근 30일</h3>
+        <p class="wk-activity__summary" id="wk-activity-summary"></p>
+      </div>
+
+      <div class="wk-activity__body">
+        <div class="wk-activity__weekdays" aria-hidden="true">
+          <span></span><span>월</span><span></span><span>수</span><span></span><span>금</span><span></span>
+        </div>
+        <div class="wk-activity__grid" id="wk-activity-grid"></div>
+      </div>
+
+      <div class="wk-activity__legend">
+        <span>적음</span>
+        <i class="wk-cell wk-cell--0"></i>
+        <i class="wk-cell wk-cell--1"></i>
+        <i class="wk-cell wk-cell--2"></i>
+        <i class="wk-cell wk-cell--3"></i>
+        <i class="wk-cell wk-cell--4"></i>
+        <span>많음</span>
+      </div>
+
+      <noscript>
+        <p class="wk-activity__summary">일별 그래프는 자바스크립트가 켜져 있어야 표시됩니다. 전체 기록은 아래 목록에서 확인할 수 있습니다.</p>
+      </noscript>
+    </div>
+
+    {%- comment -%} 그래프가 읽어 갈 세션 데이터 {%- endcomment -%}
+    <script type="application/json" id="wk-session-data">[
+      {%- for w in logs -%}
+      {"date":{{ w.date | date: '%Y-%m-%d' | jsonify }},"minutes":{{ w.duration | default: 0 }},"title":{{ w.title | jsonify }},"url":{{ w.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]</script>
   </div>
 </section>
 {%- endif -%}
