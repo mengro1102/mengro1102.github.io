@@ -1,5 +1,5 @@
 ---
-title: "발기술은 넘기려고 쓰는 게 아니다"
+subtitle: "발기술은 넘기려고 쓰는 게 아니다"
 date: 2026-07-30
 category: ["그래플링"]
 duration: 60

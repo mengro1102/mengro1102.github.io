@@ -24,7 +24,9 @@
         {% include workout/badge.html name=name %}
       {%- endfor -%}
     </div>
-    <h3 class="wk-log__title">{{ w.title }}</h3>
+    <h3 class="wk-log__title">{{ w.date | date: "%Y-%m-%d" }} 운동 기록</h3>
+    {%- assign sub = w.subtitle | default: w.title -%}
+    {% if sub %}<p class="wk-log__subtitle">{{ sub }}</p>{% endif %}
     {% if w.summary %}<p class="wk-log__summary">{{ w.summary }}</p>{% endif %}
     <div class="wk-log__foot">
       {% if w.duration %}<span>⏱ {{ w.duration }}분</span>{% endif %}
