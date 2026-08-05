@@ -450,7 +450,10 @@ pre code, .highlight code { padding: 0; background: transparent; color: inherit;
 }
 
 /* ===== 종목 분포 바 ===== */
-.wk-mix { display: grid; gap: 14px; }
+.wk-mix {
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 16px; flex: 1;
+}
 .wk-mix__row {
   display: grid; grid-template-columns: 96px 1fr 96px;
   align-items: center; gap: 14px;
@@ -555,6 +558,12 @@ pre code, .highlight code { padding: 0; background: transparent; color: inherit;
   font-size: 18.5px; font-weight: 700; line-height: 1.4;
   margin: 0 0 8px; color: var(--text);
 }
+.wk-log__subtitle {
+  font-size: 14.5px; font-weight: 600;
+  color: var(--accent);
+  margin: -4px 0 8px;
+  line-height: 1.45;
+}
 .wk-log__summary {
   font-size: 14px; color: var(--text-soft);
   margin: 0 0 14px;
@@ -623,6 +632,13 @@ pre code, .highlight code { padding: 0; background: transparent; color: inherit;
   font-size: clamp(28px, 4.6vw, 46px);
   font-weight: 700; line-height: 1.1; letter-spacing: .01em;
   margin: 0 0 18px; color: var(--text);
+}
+.wk-article__subtitle {
+  font-size: clamp(16px, 2vw, 19px);
+  font-weight: 600;
+  color: var(--accent);
+  margin: -8px 0 18px;
+  line-height: 1.45;
 }
 .wk-article__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
 
@@ -886,32 +902,37 @@ pre code, .highlight code { padding: 0; background: transparent; color: inherit;
 }
 
 /* ===== Training Balance 2컬럼 =====
-   왼쪽(세션 기록)이 남는 폭을 모두 가져가고, 오른쪽 그래프는 제 폭만 차지한다. */
+   왼쪽(세션 기록)이 남는 폭을 모두 가져가고, 오른쪽 그래프는 제 폭만 차지한다.
+   두 패널의 세로 높이는 stretch 로 맞춘다. */
 .wk-balance {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 40px;
-  align-items: start;
+  gap: 24px;
+  align-items: stretch;
 }
 @media (max-width: 860px) {
-  .wk-balance { grid-template-columns: 1fr; gap: 28px; }
+  .wk-balance { grid-template-columns: 1fr; gap: 20px; }
 }
 
-/* ===== 최근 4주 훈련 블록 ===== */
-.wk-activity {
+.wk-panel {
+  display: flex;
+  flex-direction: column;
   padding: 18px 20px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
-.wk-activity__title {
+.wk-panel__title {
   font-family: var(--font-mono);
   font-size: 10.5px; font-weight: 700;
   letter-spacing: .16em; text-transform: uppercase;
   color: var(--text-mute);
-  margin: 0 0 14px;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
 }
 
+/* ===== 최근 4주 훈련 블록 ===== */
 /* 요일 머리글과 칸 그리드는 같은 열 규격을 쓴다 */
 .wk-activity__weekdays,
 .wk-activity__grid {
@@ -927,6 +948,9 @@ pre code, .highlight code { padding: 0; background: transparent; color: inherit;
   color: var(--text-mute);
   text-align: center;
 }
+/* 달력처럼 주말만 색을 준다 (칸 자체는 훈련량 색을 유지해야 하므로 머리글에만) */
+.wk-activity__weekdays .wk-wd--sun { color: var(--accent); }
+.wk-activity__weekdays .wk-wd--sat { color: var(--wk-blue); }
 
 .wk-cell {
   display: block;
@@ -959,7 +983,8 @@ a.wk-cell:hover {
 
 .wk-activity__legend {
   display: flex; align-items: center; gap: 4px;
-  margin-top: 12px;
+  margin-top: auto;
+  padding-top: 12px;
   font-family: var(--font-mono); font-size: 10px;
   color: var(--text-mute);
 }

@@ -70,9 +70,9 @@
   });
 })();
 
-/* ===== 최근 4주 훈련 블록 (월~일 x 4주 = 28칸) =====
+/* ===== 최근 4주 훈련 블록 (일~토 x 4주 = 28칸) =====
    빌드 시점이 아니라 '보는 시점'의 오늘을 기준으로 창을 잡기 위해 런타임에 그린다.
-   주 경계(월요일)에 맞춰 그리므로 빈 칸 없는 7x4 직사각형이 된다. */
+   주 경계(일요일)에 맞춰 그리므로 빈 칸 없는 7x4 직사각형이 된다. */
 (function () {
   var root = document.getElementById('wk-activity');
   var grid = document.getElementById('wk-activity-grid');
@@ -127,11 +127,9 @@
   today.setHours(0, 0, 0, 0);
   var todayKey = ymd(today);
 
-  // 이번 주 월요일을 찾고 (일요일이면 6일 전), 거기서 (WEEKS-1)주 더 거슬러 올라간다
-  var dow = today.getDay();
-  var sinceMonday = (dow === 0 ? 6 : dow - 1);
+  // 달력처럼 일요일이 주의 시작. 이번 주 일요일에서 (WEEKS-1)주 더 거슬러 올라간다
   var start = new Date(today);
-  start.setDate(today.getDate() - sinceMonday - (WEEKS - 1) * 7);
+  start.setDate(today.getDate() - today.getDay() - (WEEKS - 1) * 7);
 
   var frag = document.createDocumentFragment();
   var trainedDays = 0;

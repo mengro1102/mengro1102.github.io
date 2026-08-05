@@ -5,18 +5,30 @@
   별도 도메인으로 분리할 때는 이 파일을 그대로 새 저장소의 default.html 로 쓰면 된다.
 {%- endcomment -%}
 {%- assign wk = site.workout -%}
+{%- comment -%}
+  훈련 일지의 제목은 항상 "YYYY-MM-DD 운동 기록" 으로 고정한다.
+  front matter 의 subtitle 이 그날의 주제(부제)를 담는다.
+{%- endcomment -%}
+{%- assign is_log = false -%}
+{%- if page.collection == 'workouts' and page.date -%}{%- assign is_log = true -%}{%- endif -%}
+{%- if is_log -%}
+  {%- assign doc_title = page.date | date: '%Y-%m-%d' | append: ' 운동 기록' -%}
+  {%- assign doc_sub = page.subtitle | default: page.title -%}
+{%- else -%}
+  {%- assign doc_title = page.title -%}
+{%- endif -%}
 <html lang="{{ site.lang | default: 'ko-KR' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>{% if page.title and page.url != '/workout/' %}{{ page.title }} · {{ wk.title }}{% else %}{{ wk.title }} · {{ wk.tagline }}{% endif %}</title>
+  <title>{% if is_log %}{{ doc_title }}{% if doc_sub %} — {{ doc_sub }}{% endif %} · {{ wk.title }}{% elsif doc_title and page.url != '/workout/' %}{{ doc_title }} · {{ wk.title }}{% else %}{{ wk.title }} · {{ wk.tagline }}{% endif %}</title>
   <meta name="description" content="{{ page.summary | default: page.description | default: wk.description }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
 
   <meta property="og:type" content="{% if page.date %}article{% else %}website{% endif %}">
   <meta property="og:site_name" content="{{ wk.title }}">
-  <meta property="og:title" content="{{ page.title | default: wk.title }}">
+  <meta property="og:title" content="{% if is_log %}{{ doc_title }}{% if doc_sub %} — {{ doc_sub }}{% endif %}{% else %}{{ doc_title | default: wk.title }}{% endif %}">
   <meta property="og:description" content="{{ page.summary | default: page.description | default: wk.description }}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <meta name="twitter:card" content="summary">

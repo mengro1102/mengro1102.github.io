@@ -73,7 +73,8 @@ title: "개인기록"
 
     <div class="wk-balance">
       {%- comment -%} 왼쪽: 카테고리별 세션 기록 (넓은 쪽) {%- endcomment -%}
-      <div class="wk-balance__mix">
+      <section class="wk-panel">
+        <h3 class="wk-panel__title">세션 기록</h3>
         <div class="wk-mix">
           {%- for c in wk.categories -%}
             {%- assign n = 0 -%}
@@ -96,47 +97,45 @@ title: "개인기록"
             </div>
           {%- endfor -%}
         </div>
-      </div>
+      </section>
 
       {%- comment -%}
-        오른쪽: 최근 4주 훈련 블록 (월~일 × 4주 = 28칸 정배열)
-        주 경계에 맞춰 그리므로 빈 칸 없이 7×4 직사각형이 된다.
+        오른쪽: 최근 4주 훈련 블록 (일~토 x 4주 = 28칸 정배열)
+        주 경계에 맞춰 그리므로 빈 칸 없이 7x4 직사각형이 된다.
         오늘을 기준으로 창을 잡아야 하므로 그리드는 JS 가 그린다. Liquid 로 미리
         그리면 마지막 빌드 시점에 창이 고정되어, 한동안 푸시가 없으면 "최근 4주"가
         실제로는 몇 주 전 구간을 가리키게 된다.
       {%- endcomment -%}
-      <div class="wk-balance__activity">
-        <div class="wk-activity" id="wk-activity" data-weeks="4">
-          <h3 class="wk-activity__title">최근 4주</h3>
+      <section class="wk-panel wk-panel--activity" id="wk-activity" data-weeks="4">
+        <h3 class="wk-panel__title">최근 4주</h3>
 
-          <div class="wk-activity__weekdays" aria-hidden="true">
-            <span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span>
-          </div>
-          <div class="wk-activity__grid" id="wk-activity-grid"></div>
-
-          <p class="wk-activity__summary" id="wk-activity-summary"></p>
-
-          <div class="wk-activity__legend">
-            <span>적음</span>
-            <i class="wk-cell wk-cell--0"></i>
-            <i class="wk-cell wk-cell--1"></i>
-            <i class="wk-cell wk-cell--2"></i>
-            <i class="wk-cell wk-cell--3"></i>
-            <i class="wk-cell wk-cell--4"></i>
-            <span>많음</span>
-          </div>
-
-          <noscript>
-            <p class="wk-activity__summary">일별 그래프는 자바스크립트가 켜져 있어야 표시됩니다.</p>
-          </noscript>
+        <div class="wk-activity__weekdays" aria-hidden="true">
+          <span class="wk-wd--sun">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="wk-wd--sat">토</span>
         </div>
-      </div>
+        <div class="wk-activity__grid" id="wk-activity-grid"></div>
+
+        <p class="wk-activity__summary" id="wk-activity-summary"></p>
+
+        <div class="wk-activity__legend">
+          <span>적음</span>
+          <i class="wk-cell wk-cell--0"></i>
+          <i class="wk-cell wk-cell--1"></i>
+          <i class="wk-cell wk-cell--2"></i>
+          <i class="wk-cell wk-cell--3"></i>
+          <i class="wk-cell wk-cell--4"></i>
+          <span>많음</span>
+        </div>
+
+        <noscript>
+          <p class="wk-activity__summary">일별 그래프는 자바스크립트가 켜져 있어야 표시됩니다.</p>
+        </noscript>
+      </section>
     </div>
 
     {%- comment -%} 그래프가 읽어 갈 세션 데이터 {%- endcomment -%}
     <script type="application/json" id="wk-session-data">[
       {%- for w in logs -%}
-      {"date":{{ w.date | date: '%Y-%m-%d' | jsonify }},"minutes":{{ w.duration | default: 0 }},"title":{{ w.title | jsonify }},"url":{{ w.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
+      {"date":{{ w.date | date: '%Y-%m-%d' | jsonify }},"minutes":{{ w.duration | default: 0 }},"title":{{ w.subtitle | default: w.title | jsonify }},"url":{{ w.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
       {%- endfor -%}
     ]</script>
   </div>

@@ -19,7 +19,9 @@ layout: workout-base
         {%- endfor -%}
       </div>
 
-      <h1 class="wk-article__title">{{ page.title }}</h1>
+      <h1 class="wk-article__title">{{ page.date | date: "%Y-%m-%d" }} 운동 기록</h1>
+      {%- assign sub = page.subtitle | default: page.title -%}
+      {% if sub %}<p class="wk-article__subtitle">{{ sub }}</p>{% endif %}
 
       {%- comment -%}
         지표를 하나도 적지 않은 일지도 있으므로, 채워진 항목이 있을 때만 표를 그린다.
@@ -115,13 +117,13 @@ layout: workout-base
       {% if prev_log %}
         <a class="wk-prevnext__item wk-prevnext__item--prev" href="{{ prev_log.url | relative_url }}">
           <span class="wk-prevnext__dir">← 이전 세션 · {{ prev_log.date | date: "%m.%d" }}</span>
-          <span class="wk-prevnext__title">{{ prev_log.title }}</span>
+          <span class="wk-prevnext__title">{{ prev_log.subtitle | default: prev_log.title }}</span>
         </a>
       {% else %}<span></span>{% endif %}
       {% if next_log %}
         <a class="wk-prevnext__item wk-prevnext__item--next" href="{{ next_log.url | relative_url }}">
           <span class="wk-prevnext__dir">다음 세션 · {{ next_log.date | date: "%m.%d" }} →</span>
-          <span class="wk-prevnext__title">{{ next_log.title }}</span>
+          <span class="wk-prevnext__title">{{ next_log.subtitle | default: next_log.title }}</span>
         </a>
       {% endif %}
     </nav>
