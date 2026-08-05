@@ -70,8 +70,9 @@
   });
 })();
 
-/* ===== 최근 30일 훈련 블록 (깃허브 잔디 형태) =====
-   빌드 시점이 아니라 '보는 시점'의 오늘을 기준으로 창을 잡기 위해 런타임에 그린다. */
+/* ===== 최근 4주 훈련 블록 (월~일 x 4주 = 28칸) =====
+   빌드 시점이 아니라 '보는 시점'의 오늘을 기준으로 창을 잡기 위해 런타임에 그린다.
+   주 경계(월요일)에 맞춰 그리므로 빈 칸 없는 7x4 직사각형이 된다. */
 (function () {
   var root = document.getElementById('wk-activity');
   var grid = document.getElementById('wk-activity-grid');
@@ -85,7 +86,8 @@
     return;
   }
 
-  var DAYS = parseInt(root.getAttribute('data-days'), 10) || 30;
+  var WEEKS = parseInt(root.getAttribute('data-weeks'), 10) || 4;
+  var DAYS = WEEKS * 7;
   var WD = ['일', '월', '화', '수', '목', '금', '토'];
 
   // 날짜별로 합산 (하루에 두 세션을 한 경우 포함)
@@ -123,18 +125,15 @@
 
   var today = new Date();
   today.setHours(0, 0, 0, 0);
+  var todayKey = ymd(today);
+
+  // 이번 주 월요일을 찾고 (일요일이면 6일 전), 거기서 (WEEKS-1)주 더 거슬러 올라간다
+  var dow = today.getDay();
+  var sinceMonday = (dow === 0 ? 6 : dow - 1);
   var start = new Date(today);
-  start.setDate(start.getDate() - (DAYS - 1));
+  start.setDate(today.getDate() - sinceMonday - (WEEKS - 1) * 7);
 
   var frag = document.createDocumentFragment();
-
-  // 첫 칸이 올바른 요일 줄에서 시작하도록 앞을 비워 둔다
-  for (var b = 0; b < start.getDay(); b++) {
-    var spacer = document.createElement('span');
-    spacer.className = 'wk-cell wk-cell--empty';
-    frag.appendChild(spacer);
-  }
-
   var trainedDays = 0;
   var totalMinutes = 0;
 
@@ -143,14 +142,18 @@
     dt.setDate(start.getDate() + i);
 
     var key = ymd(dt);
-    var rec = byDay[key];
+    var isFuture = dt > today;
+    var rec = isFuture ? null : byDay[key];
+
     if (rec) {
       trainedDays += 1;
       totalMinutes += rec.minutes;
     }
 
     var label = key + ' (' + WD[dt.getDay()] + ') · ';
-    if (rec) {
+    if (isFuture) {
+      label += '아직';
+    } else if (rec) {
       label += rec.count + '세션';
       var mins = formatMinutes(rec.minutes);
       if (mins) label += ' · ' + mins;
@@ -167,7 +170,11 @@
     } else {
       cell = document.createElement('span');
     }
-    cell.className = 'wk-cell wk-cell--' + levelOf(rec);
+
+    var cls = 'wk-cell wk-cell--' + levelOf(rec);
+    if (isFuture) cls += ' wk-cell--future';
+    if (key === todayKey) cls += ' wk-cell--today';
+    cell.className = cls;
     cell.title = label;
     frag.appendChild(cell);
   }
@@ -178,11 +185,7 @@
   var summary = document.getElementById('wk-activity-summary');
   if (summary) {
     var time = formatMinutes(totalMinutes);
-    summary.textContent = DAYS + '일 중 ' + trainedDays + '일 훈련'
+    summary.textContent = WEEKS + '주간 ' + trainedDays + '일 훈련'
       + (time ? ' · 총 ' + time : '');
   }
-
-  // 최근 날짜가 보이도록 가로 스크롤을 끝으로
-  var body = root.querySelector('.wk-activity__body');
-  if (body) body.scrollLeft = body.scrollWidth;
 })();

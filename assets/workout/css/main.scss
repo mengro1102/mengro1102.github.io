@@ -885,80 +885,84 @@ pre code, .highlight code { padding: 0; background: transparent; color: inherit;
   .wk-gym__logo { width: 64px; height: 64px; }
 }
 
-/* ===== 최근 30일 훈련 블록 ===== */
+/* ===== Training Balance 2컬럼 =====
+   왼쪽(세션 기록)이 남는 폭을 모두 가져가고, 오른쪽 그래프는 제 폭만 차지한다. */
+.wk-balance {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .wk-balance { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* ===== 최근 4주 훈련 블록 ===== */
 .wk-activity {
-  margin-top: 30px;
-  padding: 20px 22px;
+  padding: 18px 20px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
-.wk-activity__head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  flex-wrap: wrap; gap: 6px 16px;
-  margin-bottom: 16px;
-}
 .wk-activity__title {
   font-family: var(--font-mono);
-  font-size: 11px; font-weight: 700;
+  font-size: 10.5px; font-weight: 700;
   letter-spacing: .16em; text-transform: uppercase;
   color: var(--text-mute);
-  margin: 0;
-}
-.wk-activity__summary {
-  margin: 0;
-  font-family: var(--font-mono); font-size: 12px;
-  color: var(--text-soft);
-  font-variant-numeric: tabular-nums;
+  margin: 0 0 14px;
 }
 
-.wk-activity__body {
-  display: flex; align-items: flex-start; gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-.wk-activity__weekdays {
-  display: grid;
-  grid-template-rows: repeat(7, 17px);
-  gap: 5px;
-  flex-shrink: 0;
-}
-.wk-activity__weekdays span {
-  font-family: var(--font-mono); font-size: 9px;
-  color: var(--text-mute);
-  line-height: 17px;
-}
+/* 요일 머리글과 칸 그리드는 같은 열 규격을 쓴다 */
+.wk-activity__weekdays,
 .wk-activity__grid {
   display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(7, 17px);
-  grid-auto-columns: 17px;
+  grid-template-columns: repeat(7, 20px);
   gap: 5px;
+}
+.wk-activity__weekdays {
+  margin-bottom: 7px;
+}
+.wk-activity__weekdays span {
+  font-family: var(--font-mono); font-size: 9.5px;
+  color: var(--text-mute);
+  text-align: center;
 }
 
 .wk-cell {
   display: block;
-  width: 17px; height: 17px;
-  border-radius: 2px;
+  width: 20px; height: 20px;
+  border-radius: 3px;
   background: var(--cell-0);
 }
-.wk-cell--empty { background: transparent; }
 .wk-cell--1 { background: var(--cell-1); }
 .wk-cell--2 { background: var(--cell-2); }
 .wk-cell--3 { background: var(--cell-3); }
 .wk-cell--4 { background: var(--cell-4); }
+/* 이번 주의 아직 오지 않은 날 */
+.wk-cell--future {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.wk-cell--today { box-shadow: inset 0 0 0 2px var(--text-soft); }
 a.wk-cell { cursor: pointer; }
 a.wk-cell:hover {
   outline: 2px solid var(--text);
   outline-offset: 1px;
 }
 
+.wk-activity__summary {
+  margin: 14px 0 0;
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
 .wk-activity__legend {
   display: flex; align-items: center; gap: 4px;
-  margin-top: 14px;
+  margin-top: 12px;
   font-family: var(--font-mono); font-size: 10px;
   color: var(--text-mute);
 }
-.wk-activity__legend .wk-cell { width: 11px; height: 11px; }
+.wk-activity__legend .wk-cell { width: 11px; height: 11px; border-radius: 2px; }
 .wk-activity__legend span:first-child { margin-right: 4px; }
 .wk-activity__legend span:last-child { margin-left: 4px; }
