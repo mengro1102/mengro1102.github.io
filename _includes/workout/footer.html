@@ -18,7 +18,7 @@
     </div>
     <dl class="wk-footer__stats">
       <div><dt>Sessions</dt><dd>{{ logs.size }}</dd></div>
-      <div><dt>Mat Time</dt><dd>{{ total_min | divided_by: 60 }}h</dd></div>
+      <div><dt>Mat Time</dt><dd>{% include workout/hours.html minutes=total_min %}h</dd></div>
       <div><dt>Rounds</dt><dd>{{ total_rounds }}</dd></div>
     </dl>
   </div>
