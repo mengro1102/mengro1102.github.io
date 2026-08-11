@@ -213,8 +213,16 @@ workout:
     short: "TGC"              # 약칭
     name_ko: "팀 금천 MMA"     # 한글 명칭
     logo: ""                  # 로고 경로. 비우면 TGC 옥타곤 마크가 대신 표시됨
-    since: 2024-03-01         # 등록 시점
+    since: 2024-11-01         # 다니기 시작한 시점 (연-월까지만 표시)
+    address: "서울 금천구 시흥대로 488 혜전빌딩 지층 02호"
+    links:                    # 외부 링크 버튼. 순서대로 표시된다
+      - { label: "인스타그램",  url: "https://www.instagram.com/team_geumcheon/" }
+      - { label: "네이버 지도", url: "https://map.naver.com/p/search/..." }
+      - { label: "네이버 블로그", url: "https://blog.naver.com/team_geumcheon_" }
 ```
+
+`links` 는 개수 제한이 없습니다. 항목을 추가하면 버튼이 하나 더 생기고, `url` 이 비어
+있는 항목은 렌더링되지 않습니다. 모든 링크는 새 탭에서 열립니다.
 
 ### 로고 넣기
 

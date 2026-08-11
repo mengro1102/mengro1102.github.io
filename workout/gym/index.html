@@ -51,11 +51,40 @@ description: "팀금천의 활동을 기념하기 위해 기록하는 공간입�
       <div class="wk-gym__info">
         <h3 class="wk-gym__name">{{ gym.name }}{% if gym.short %} <span>({{ gym.short }})</span>{% endif %}</h3>
         {% if gym.name_ko %}<p class="wk-gym__ko">{{ gym.name_ko }}</p>{% endif %}
-        {% if gym.since %}
-        <p class="wk-gym__since">
-          <span>MEMBER SINCE</span>
-          <b>{{ gym.since | date: "%Y.%m" }}</b>
-        </p>
+
+        <dl class="wk-gym__meta">
+          {% if gym.since %}
+          <div>
+            <dt>Member Since</dt>
+            <dd>{{ gym.since | date: "%Y.%m" }}</dd>
+          </div>
+          {% endif %}
+          {% if gym.address %}
+          <div>
+            <dt>Location</dt>
+            <dd>{{ gym.address }}</dd>
+          </div>
+          {% endif %}
+        </dl>
+
+        {%- comment -%} 값이 비어 있는 링크는 렌더링하지 않는다 {%- endcomment -%}
+        {%- assign has_links = false -%}
+        {%- for l in gym.links -%}
+          {%- if l.url and l.url != "" -%}{%- assign has_links = true -%}{%- endif -%}
+        {%- endfor -%}
+        {% if has_links %}
+        <div class="wk-gym__links">
+          {%- for l in gym.links -%}
+            {%- if l.url and l.url != "" -%}
+            <a href="{{ l.url }}" target="_blank" rel="noopener noreferrer">
+              {{ l.label }}
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17L17 7M17 7H8M17 7v9"/>
+              </svg>
+            </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
         {% endif %}
       </div>
     </div>
