@@ -38,7 +38,9 @@ description: "팀금천의 활동을 기념하기 위해 기록하는 공간입�
     <div class="wk-gym">
       <div class="wk-gym__logo">
         {%- if gym.logo and gym.logo != "" -%}
-          <img src="{{ gym.logo | relative_url }}" alt="{{ gym.name }} 로고">
+          <img src="{{ gym.logo | relative_url }}"
+               {% if gym.logo_2x and gym.logo_2x != "" %}srcset="{{ gym.logo | relative_url }} 1x, {{ gym.logo_2x | relative_url }} 2x"{% endif %}
+               alt="{{ gym.name }} 로고" width="76" height="76">
         {%- else -%}
           <svg viewBox="0 0 100 100" role="img" aria-label="{{ gym.short }}">
             <polygon points="29.3,0 70.7,0 100,29.3 100,70.7 70.7,100 29.3,100 0,70.7 0,29.3" fill="#0B0B0F"/>
@@ -76,9 +78,14 @@ description: "팀금천의 활동을 기념하기 위해 기록하는 공간입�
         <div class="wk-gym__links">
           {%- for l in gym.links -%}
             {%- if l.url and l.url != "" -%}
-            <a href="{{ l.url }}" target="_blank" rel="noopener noreferrer">
-              {{ l.label }}
-              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <a class="wk-gym__link" href="{{ l.url }}" target="_blank" rel="noopener noreferrer"
+               {% if l.color %}style="--link-color: {{ l.color }}"{% endif %}>
+              <span class="wk-gym__link-icon">{% include workout/link-icon.html name=l.icon %}</span>
+              <span class="wk-gym__link-text">
+                <span class="wk-gym__link-label">{{ l.label }}</span>
+                {% if l.handle %}<span class="wk-gym__link-handle">{{ l.handle }}</span>{% endif %}
+              </span>
+              <svg class="wk-gym__link-arrow" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M7 17L17 7M17 7H8M17 7v9"/>
               </svg>
             </a>
