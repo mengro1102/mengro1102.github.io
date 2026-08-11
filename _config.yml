@@ -69,14 +69,30 @@ workout:
     name_ko: "팀 금천 MMA"
     # 로고 파일을 assets/workout/img/ 에 넣고 아래 경로를 채우면 표시된다.
     # 비워 두면 TGC 옥타곤 마크가 대신 나온다.
+    # 원본 사진은 tools/make-gym-logo.py 로 배경 제거 후 쓴다 (WORKOUT.md 3절).
     logo: ""
+    logo_2x: ""                  # 선택. @2x 파일이 있으면 경로를 넣으면 레티나에서 선명해진다
     since: 2024-11-01            # 다니기 시작한 시점 (연-월까지만 표시된다)
     address: "서울 금천구 시흥대로 488 혜전빌딩 지층 02호"
-    # 외부 링크. 값을 비우면 해당 버튼이 렌더링되지 않는다.
+    # 외부 링크. url 이 비면 해당 버튼이 렌더링되지 않는다.
+    # icon: instagram | map | blog | youtube (그 외 이름은 일반 링크 아이콘)
+    # color: 아이콘 색이자 hover 시 채워지는 색
     links:
-      - { label: "인스타그램",  url: "https://www.instagram.com/team_geumcheon/" }
-      - { label: "네이버 지도", url: "https://map.naver.com/p/search/%ED%8C%80%EA%B8%88%EC%B2%9C/place/1429916369" }
-      - { label: "네이버 블로그", url: "https://blog.naver.com/team_geumcheon_" }
+      - label: "인스타그램"
+        handle: "@team_geumcheon"
+        url: "https://www.instagram.com/team_geumcheon/"
+        icon: instagram
+        color: "#E1306C"
+      - label: "네이버 지도"
+        handle: "금천구 시흥대로"
+        url: "https://map.naver.com/p/search/%ED%8C%80%EA%B8%88%EC%B2%9C/place/1429916369"
+        icon: map
+        color: "#03C75A"
+      - label: "네이버 블로그"
+        handle: "team_geumcheon_"
+        url: "https://blog.naver.com/team_geumcheon_"
+        icon: blog
+        color: "#03C75A"
 
 # ===== Collections =====
 collections:

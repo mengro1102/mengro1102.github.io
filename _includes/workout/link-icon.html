@@ -1,0 +1,33 @@
+{%- comment -%}
+  체육관 외부 링크 아이콘. include.name 은 _config.yml 의 workout.gym.links[].icon 값.
+  등록되지 않은 이름이면 일반 링크 아이콘으로 떨어진다.
+{%- endcomment -%}
+{%- case include.name -%}
+{%- when 'instagram' -%}
+<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <rect x="2" y="2" width="20" height="20" rx="5.5"/>
+  <circle cx="12" cy="12" r="4.2"/>
+  <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+</svg>
+{%- when 'map' -%}
+<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M20 10c0 5.4-8 12-8 12S4 15.4 4 10a8 8 0 0 1 16 0z"/>
+  <circle cx="12" cy="10" r="2.8"/>
+</svg>
+{%- when 'blog' -%}
+<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M4 4h11l5 5v11a0 0 0 0 1 0 0H4z"/>
+  <path d="M14.5 4v5.5H20"/>
+  <path d="M8 13h8M8 16.5h5"/>
+</svg>
+{%- when 'youtube' -%}
+<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <rect x="2" y="5" width="20" height="14" rx="4"/>
+  <path d="M10.2 9.3l5 2.7-5 2.7z" fill="currentColor" stroke="none"/>
+</svg>
+{%- else -%}
+<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/>
+  <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>
+</svg>
+{%- endcase -%}

@@ -903,29 +903,66 @@ pre code, .highlight code { padding: 0; background: transparent; color: inherit;
 }
 
 .wk-gym__links {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  margin-top: 18px;
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 20px;
 }
-.wk-gym__links a {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 7px 13px;
-  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
-  color: var(--text-soft);
+.wk-gym__link {
+  --link-color: var(--accent);
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 14px 9px 11px;
   background: var(--bg-elev);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  transition: color .15s ease, border-color .15s ease;
+  border-radius: 999px;
+  color: var(--text-soft);
+  transition: background .16s ease, border-color .16s ease, color .16s ease, transform .16s ease;
 }
-.wk-gym__links a:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+.wk-gym__link-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 50%;
+  color: var(--link-color);
+  background: color-mix(in srgb, var(--link-color) 14%, transparent);
+  transition: color .16s ease, background .16s ease;
 }
-.wk-gym__links svg { opacity: .6; }
+.wk-gym__link-text {
+  display: flex; flex-direction: column; line-height: 1.25;
+}
+.wk-gym__link-label {
+  font-size: 13px; font-weight: 700;
+  color: var(--text);
+  transition: color .16s ease;
+}
+.wk-gym__link-handle {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-mute);
+  transition: color .16s ease;
+}
+.wk-gym__link-arrow {
+  flex-shrink: 0; opacity: .45;
+  transition: opacity .16s ease, transform .16s ease;
+}
+.wk-gym__link:hover {
+  background: var(--link-color);
+  border-color: var(--link-color);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+.wk-gym__link:hover .wk-gym__link-icon {
+  color: var(--link-color);
+  background: #FFFFFF;
+}
+.wk-gym__link:hover .wk-gym__link-label,
+.wk-gym__link:hover .wk-gym__link-handle { color: #FFFFFF; }
+.wk-gym__link:hover .wk-gym__link-handle { opacity: .8; }
+.wk-gym__link:hover .wk-gym__link-arrow { opacity: 1; transform: translate(1px, -1px); }
 
 @media (max-width: 560px) {
   .wk-gym { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px; }
   .wk-gym__logo { width: 64px; height: 64px; }
   .wk-gym__meta { gap: 12px 24px; }
+  .wk-gym__links { gap: 8px; }
+  .wk-gym__link { flex: 1 1 100%; }
 }
 
 /* ===== Training Balance 2컬럼 =====

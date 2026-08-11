@@ -29,6 +29,7 @@ _includes/workout/          → header, footer, log-card, badge, intensity
 assets/workout/css/main.scss → 자립형 스타일시트 (리셋부터 전부 포함)
 assets/workout/js/workout.js → 테마 토글 + 카테고리 필터 + 표 스크롤 + 4주 그래프
 assets/workout/img/         → 체육관 로고 등 이미지
+tools/make-gym-logo.py      → 로고 배경 제거 스크립트 (빌드와 무관, 수동 실행)
 workout/index.html          → 개인기록 (로그 목록 + 통계 + 필터)
 workout/gym/index.html      → 체육관 정보 (체육관 카드 + 활동 타임라인)
 ```
@@ -216,24 +217,59 @@ workout:
     since: 2024-11-01         # 다니기 시작한 시점 (연-월까지만 표시)
     address: "서울 금천구 시흥대로 488 혜전빌딩 지층 02호"
     links:                    # 외부 링크 버튼. 순서대로 표시된다
-      - { label: "인스타그램",  url: "https://www.instagram.com/team_geumcheon/" }
-      - { label: "네이버 지도", url: "https://map.naver.com/p/search/..." }
-      - { label: "네이버 블로그", url: "https://blog.naver.com/team_geumcheon_" }
+      - label: "인스타그램"
+        handle: "@team_geumcheon"          # 버튼 아래 작은 줄. 생략 가능
+        url: "https://www.instagram.com/team_geumcheon/"
+        icon: instagram                    # instagram | map | blog | youtube
+        color: "#E1306C"                   # 아이콘 색 + hover 시 채워지는 색
+      - label: "네이버 지도"
+        handle: "금천구 시흥대로"
+        url: "https://map.naver.com/p/search/..."
+        icon: map
+        color: "#03C75A"
 ```
 
 `links` 는 개수 제한이 없습니다. 항목을 추가하면 버튼이 하나 더 생기고, `url` 이 비어
 있는 항목은 렌더링되지 않습니다. 모든 링크는 새 탭에서 열립니다.
 
+`icon` 에 등록되지 않은 이름을 쓰면 일반 링크 아이콘으로 떨어집니다. 새 아이콘을
+추가하려면 `_includes/workout/link-icon.html` 에 `when` 하나를 더 넣으면 됩니다.
+
 ### 로고 넣기
 
-1. 로고 파일을 `assets/workout/img/` 에 저장합니다 (정사각형 PNG, 512×512 이상 권장).
-2. `workout.gym.logo` 에 경로를 적습니다.
+원본 사진(카톡 캡처, 인스타 이미지 등)은 대개 흰 배경이 붙어 있고 JPEG 노이즈가 있습니다.
+`tools/make-gym-logo.py` 가 배경 제거와 다듬기를 한 번에 처리합니다.
+
+```bash
+pip install Pillow numpy          # 최초 1회
+python3 tools/make-gym-logo.py ~/Downloads/tgc.jpg
+```
+
+`assets/workout/img/tgc-logo.png` 와 `tgc-logo@2x.png` 두 벌이 생깁니다.
+그다음 `_config.yml` 에 경로를 넣습니다.
 
 ```yaml
     logo: "/assets/workout/img/tgc-logo.png"
+    logo_2x: "/assets/workout/img/tgc-logo@2x.png"   # 선택. 레티나용
 ```
 
-값이 비어 있으면 `TGC` 글자가 들어간 옥타곤 SVG 마크가 폴백으로 렌더링되므로,
+스크립트가 하는 일:
+
+| 단계 | 내용 |
+|------|------|
+| 1 | 네 모서리에서 flood fill 로 **바깥 배경만** 투명 처리. 로고 안쪽 흰 요소는 보존 |
+| 2 | 경계 픽셀을 반투명 처리해 계단 현상 완화 |
+| 3 | 내용물 기준으로 잘라 정사각 캔버스 중앙 배치 |
+| 4 | median 필터로 JPEG 노이즈 완화 후 LANCZOS 리샘플 |
+| 5 | @1x(512) / @2x(1024) 저장 |
+
+흰 테두리가 남으면 `--tolerance` 를 올리고(기본 32), 로고 일부가 지워지면 내립니다.
+여백은 `--pad`, 크기는 `--size` 로 조정합니다.
+
+> 원본에 없는 디테일을 만들어 내지는 못합니다. 흐린 원본은 흐리게 나옵니다.
+> 진짜 초해상도가 필요하면 Real-ESRGAN 같은 별도 모델을 쓰셔야 합니다.
+
+`logo` 가 비어 있으면 `TGC` 글자가 들어간 옥타곤 SVG 마크가 폴백으로 렌더링되므로,
 로고 파일이 없어도 화면이 깨지지 않습니다.
 
 ### 활동 내역 (`_data/gym_history.yml`)
