@@ -187,3 +187,52 @@
       + (time ? ' · 총 ' + time : '');
   }
 })();
+
+/* ===== 원클릭 복사 ([data-copy]) =====
+   버튼은 CSS 에서 기본 숨김이고 여기서 켜 준다. JS 가 없으면 죽은 버튼이 남지 않는다. */
+(function () {
+  var buttons = document.querySelectorAll('[data-copy]');
+  if (!buttons.length) return;
+
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function flash(btn, cls) {
+    btn.classList.remove('is-copied', 'is-failed');
+    // 리플로우를 강제해 연속 클릭에도 애니메이션이 다시 걸리게 한다
+    void btn.offsetWidth;
+    btn.classList.add(cls);
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(function () { btn.classList.remove(cls); }, 1600);
+  }
+
+  buttons.forEach(function (btn) {
+    btn.hidden = false;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var text = btn.getAttribute('data-copy') || '';
+      if (!text) return;
+
+      // clipboard API 는 보안 컨텍스트(https/localhost)에서만 동작한다
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(
+          function () { flash(btn, 'is-copied'); },
+          function () { flash(btn, legacyCopy(text) ? 'is-copied' : 'is-failed'); }
+        );
+      } else {
+        flash(btn, legacyCopy(text) ? 'is-copied' : 'is-failed');
+      }
+    });
+  });
+})();
