@@ -6,6 +6,7 @@
   python3 tools/make-gym-logo.py <원본> [-o assets/workout/img/tgc-logo.png]
 
 하는 일:
+  0. 원본에 이미 투명 배경이 있으면 1~2 단계를 건너뛴다 (--force-cutout 으로 강제 가능).
   1. 네 모서리에서 flood fill 로 '바깥 흰 배경'만 골라 투명하게 만든다.
      로고 안쪽의 밝은 색은 모서리와 이어져 있지 않으므로 건드리지 않는다.
   2. 경계 픽셀은 흰색에 가까운 정도만큼 반투명하게 만들어 계단 현상을 줄인다.
@@ -112,23 +113,36 @@ def main() -> int:
     ap.add_argument("--denoise", type=int, default=3,
                     help="median 필터 크기, 홀수. 0 이면 끔 (기본 3)")
     ap.add_argument("--no-2x", action="store_true", help="@2x 파일을 만들지 않는다")
+    ap.add_argument("--force-cutout", action="store_true",
+                    help="원본에 알파가 있어도 배경 제거를 강제로 수행한다")
     args = ap.parse_args()
 
     if not args.source.exists():
         return f"원본을 찾을 수 없습니다: {args.source}"
 
-    img = Image.open(args.source).convert("RGB")
-    print(f"원본        : {args.source}  {img.width}x{img.height}")
+    src = Image.open(args.source)
+    print(f"원본        : {args.source}  {src.width}x{src.height}  {src.mode}")
 
-    if args.denoise and args.denoise >= 3:
-        img = img.filter(ImageFilter.MedianFilter(size=args.denoise | 1))
+    # 이미 배경이 빠져 있으면 그대로 쓴다. 투명한 원본에 flood fill 을 또 돌리면
+    # 모서리 기준색이 의미가 없어져 로고를 갉아먹는다.
+    has_alpha = False
+    if src.mode in ("RGBA", "LA") or "transparency" in src.info:
+        a = np.array(src.convert("RGBA"))[:, :, 3]
+        has_alpha = (a < 250).mean() > 0.005
 
-    rgb = np.array(img)
-    bg = flood_background(rgb, args.tolerance)
-    print(f"배경 픽셀   : {bg.sum() / bg.size:.1%}")
+    if has_alpha and not args.force_cutout:
+        print("배경        : 이미 투명 — 배경 제거 건너뜀 (--force-cutout 으로 강제)")
+        rgba = src.convert("RGBA")
+    else:
+        img = src.convert("RGB")
+        if args.denoise and args.denoise >= 3:
+            img = img.filter(ImageFilter.MedianFilter(size=args.denoise | 1))
+        rgb = np.array(img)
+        bg = flood_background(rgb, args.tolerance)
+        print(f"배경 픽셀   : {bg.sum() / bg.size:.1%}")
+        alpha = soften_edges(rgb, bg, args.tolerance)
+        rgba = Image.fromarray(np.dstack([rgb, alpha]), mode="RGBA")
 
-    alpha = soften_edges(rgb, bg, args.tolerance)
-    rgba = Image.fromarray(np.dstack([rgb, alpha]), mode="RGBA")
     rgba = trim(rgba, args.pad)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)

@@ -25,11 +25,13 @@ _data/gym_history.yml       → 체육관 활동 타임라인 데이터
 _workouts/                  → 훈련 일지 (마크다운)
 _layouts/workout-base.html  → 최상위 셸 (head/헤더/푸터/스크립트)
 _layouts/workout-log.html   → 일지 상세 페이지
-_includes/workout/          → header, footer, log-card, badge, intensity
+_includes/workout/          → header, footer, log-card, badge, intensity,
+                              link-icon, copy-button, hours
 assets/workout/css/main.scss → 자립형 스타일시트 (리셋부터 전부 포함)
 assets/workout/js/workout.js → 테마 토글 + 카테고리 필터 + 표 스크롤 + 4주 그래프
 assets/workout/img/         → 체육관 로고 등 이미지
-tools/make-gym-logo.py      → 로고 배경 제거 스크립트 (빌드와 무관, 수동 실행)
+tools/make-gym-logo.py      → 로고 전처리 스크립트 (빌드 제외, 수동 실행)
+tools/logo-src/             → 로고 원본 (빌드 제외)
 workout/index.html          → 개인기록 (로그 목록 + 통계 + 필터)
 workout/gym/index.html      → 체육관 정보 (체육관 카드 + 활동 타임라인)
 ```
@@ -213,7 +215,8 @@ workout:
     name: "Team Geumcheon"    # 영문 정식 명칭
     short: "TGC"              # 약칭
     name_ko: "팀 금천 MMA"     # 한글 명칭
-    logo: ""                  # 로고 경로. 비우면 TGC 옥타곤 마크가 대신 표시됨
+    logo: "/assets/workout/img/tgc-logo.png"
+    logo_2x: "/assets/workout/img/tgc-logo@2x.png"   # 선택. 레티나용
     since: 2024-11-01         # 다니기 시작한 시점 (연-월까지만 표시)
     address: "서울 금천구 시흥대로 488 혜전빌딩 지층 02호"
     links:                    # 외부 링크 버튼. 순서대로 표시된다
@@ -235,42 +238,59 @@ workout:
 `icon` 에 등록되지 않은 이름을 쓰면 일반 링크 아이콘으로 떨어집니다. 새 아이콘을
 추가하려면 `_includes/workout/link-icon.html` 에 `when` 하나를 더 넣으면 됩니다.
 
-### 로고 넣기
+### 로고
 
-원본 사진(카톡 캡처, 인스타 이미지 등)은 대개 흰 배경이 붙어 있고 JPEG 노이즈가 있습니다.
-`tools/make-gym-logo.py` 가 배경 제거와 다듬기를 한 번에 처리합니다.
+현재 팀금천 로고가 적용되어 있습니다.
+
+| 파일 | 용도 |
+|------|------|
+| `tools/logo-src/tgc-logo-source.png` | 원본 2232×2232 (사이트에 배포되지 않음) |
+| `assets/workout/img/tgc-logo.png` | 256×256, 90KB — 카드에 쓰이는 파일 |
+| `assets/workout/img/tgc-logo@2x.png` | 512×512, 290KB — 레티나용 |
+
+원본 3.3MB 를 그대로 쓰면 104px 자리에 3MB 를 내려받게 되므로 축소본을 씁니다.
+`tools/` 는 `_config.yml` 의 `exclude` 에 들어 있어 빌드 결과물에 포함되지 않습니다.
+
+#### 로고를 바꿀 때
 
 ```bash
 pip install Pillow numpy          # 최초 1회
-python3 tools/make-gym-logo.py ~/Downloads/tgc.jpg
+python3 tools/make-gym-logo.py tools/logo-src/새-원본.png --size 256
 ```
 
-`assets/workout/img/tgc-logo.png` 와 `tgc-logo@2x.png` 두 벌이 생깁니다.
-그다음 `_config.yml` 에 경로를 넣습니다.
-
-```yaml
-    logo: "/assets/workout/img/tgc-logo.png"
-    logo_2x: "/assets/workout/img/tgc-logo@2x.png"   # 선택. 레티나용
-```
-
-스크립트가 하는 일:
+`assets/workout/img/tgc-logo.png` 와 `@2x` 가 덮어써지고, `_config.yml` 에 넣을 줄이
+출력됩니다. 스크립트가 하는 일:
 
 | 단계 | 내용 |
 |------|------|
-| 1 | 네 모서리에서 flood fill 로 **바깥 배경만** 투명 처리. 로고 안쪽 흰 요소는 보존 |
+| 0 | **원본이 이미 투명하면 배경 제거를 건너뜁니다** (`--force-cutout` 으로 강제 가능) |
+| 1 | 아니라면 네 모서리에서 flood fill 로 바깥 배경만 투명 처리. 로고 안쪽 흰 요소는 보존 |
 | 2 | 경계 픽셀을 반투명 처리해 계단 현상 완화 |
 | 3 | 내용물 기준으로 잘라 정사각 캔버스 중앙 배치 |
 | 4 | median 필터로 JPEG 노이즈 완화 후 LANCZOS 리샘플 |
-| 5 | @1x(512) / @2x(1024) 저장 |
+| 5 | @1x / @2x 저장 |
 
 흰 테두리가 남으면 `--tolerance` 를 올리고(기본 32), 로고 일부가 지워지면 내립니다.
-여백은 `--pad`, 크기는 `--size` 로 조정합니다.
 
 > 원본에 없는 디테일을 만들어 내지는 못합니다. 흐린 원본은 흐리게 나옵니다.
 > 진짜 초해상도가 필요하면 Real-ESRGAN 같은 별도 모델을 쓰셔야 합니다.
 
-`logo` 가 비어 있으면 `TGC` 글자가 들어간 옥타곤 SVG 마크가 폴백으로 렌더링되므로,
-로고 파일이 없어도 화면이 깨지지 않습니다.
+`logo` 를 비우면 `TGC` 옥타곤 SVG 마크가 폴백으로 렌더링됩니다.
+
+### 주소 복사 버튼
+
+주소 옆의 `복사` 버튼을 누르면 클립보드에 들어갑니다. 성공하면 버튼이 초록색
+체크로 바뀌었다가 1.6초 뒤 돌아옵니다.
+
+다른 곳에도 붙일 수 있습니다.
+
+```liquid
+{% raw %}{% include workout/copy-button.html text=gym.address label="주소 복사" %}{% endraw %}
+```
+
+버튼은 마크업에서 `hidden` 이고 JS 가 켜 주므로, 자바스크립트가 꺼져 있으면
+동작하지 않는 버튼이 남지 않습니다. `navigator.clipboard` 를 먼저 쓰고 실패하면
+`execCommand` 로 떨어집니다 (clipboard API 는 https/localhost 에서만 동작).
 
 ### 활동 내역 (`_data/gym_history.yml`)
 

@@ -40,7 +40,7 @@ description: "팀금천의 활동을 기념하기 위해 기록하는 공간입�
         {%- if gym.logo and gym.logo != "" -%}
           <img src="{{ gym.logo | relative_url }}"
                {% if gym.logo_2x and gym.logo_2x != "" %}srcset="{{ gym.logo | relative_url }} 1x, {{ gym.logo_2x | relative_url }} 2x"{% endif %}
-               alt="{{ gym.name }} 로고" width="76" height="76">
+               alt="{{ gym.name }} 로고" width="104" height="104">
         {%- else -%}
           <svg viewBox="0 0 100 100" role="img" aria-label="{{ gym.short }}">
             <polygon points="29.3,0 70.7,0 100,29.3 100,70.7 70.7,100 29.3,100 0,70.7 0,29.3" fill="#0B0B0F"/>
@@ -62,9 +62,12 @@ description: "팀금천의 활동을 기념하기 위해 기록하는 공간입�
           </div>
           {% endif %}
           {% if gym.address %}
-          <div>
+          <div class="wk-gym__meta--address">
             <dt>Location</dt>
-            <dd>{{ gym.address }}</dd>
+            <dd>
+              <span>{{ gym.address }}</span>
+              {% include workout/copy-button.html text=gym.address label="주소 복사" %}
+            </dd>
           </div>
           {% endif %}
         </dl>

@@ -1,0 +1,19 @@
+{%- comment -%}
+  원클릭 복사 버튼.
+  include.text  : 복사할 문자열 (필수)
+  include.label : 스크린리더용 설명 (기본 "복사")
+
+  실제 복사는 assets/workout/js/workout.js 의 [data-copy] 핸들러가 처리한다.
+  JS 가 없으면 버튼이 보이지 않으므로(.wk-copy 는 JS 가 켜 준다) 죽은 버튼이 남지 않는다.
+{%- endcomment -%}
+<button type="button" class="wk-copy" hidden data-copy="{{ include.text | escape }}"
+        aria-label="{{ include.label | default: '복사' }}" title="{{ include.label | default: '복사' }}">
+  <svg class="wk-copy__icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="9" y="9" width="12" height="12" rx="2.5"/>
+    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>
+  </svg>
+  <svg class="wk-copy__done" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M20 6L9 17l-5-5"/>
+  </svg>
+  <span class="wk-copy__text">복사</span>
+</button>
