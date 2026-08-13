@@ -2,6 +2,7 @@
 subtitle: "더블렉은 머리를 세우고 붙여야 힘이 전달된다"
 date: 2026-08-11
 category: ["그래플링", "타격", "컨디셔닝"]
+duration: 120
 intensity: 3
 rounds: 7
 condition: "체력훈련 후 힘 빠짐"
