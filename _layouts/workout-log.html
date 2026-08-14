@@ -84,6 +84,15 @@ layout: workout-base
     </div>
     {% endif %}
 
+    {%- comment -%}
+      본문 절 목차. 절이 3개로 고정(규칙 5)이라 항상 같은 3항목이 나온다.
+      비어 있으면 JS 가 통째로 제거하므로 빈 상자가 남지 않는다.
+    {%- endcomment -%}
+    <nav class="wk-toc" id="wk-toc" hidden aria-label="목차">
+      <span class="wk-toc__label">목차</span>
+      <ol class="wk-toc__list" id="wk-toc-list"></ol>
+    </nav>
+
     <div class="wk-content">
       {{ content }}
     </div>

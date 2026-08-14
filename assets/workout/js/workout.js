@@ -236,3 +236,52 @@
     });
   });
 })();
+
+/* ===== 일지 본문 목차 =====
+   본문 절은 규칙 5 에 따라 3개로 고정이지만, 헤딩을 읽어 만들기 때문에
+   절 이름이 바뀌어도 따라간다. 헤딩이 없으면 목차를 통째로 지운다. */
+(function () {
+  var toc = document.getElementById('wk-toc');
+  var list = document.getElementById('wk-toc-list');
+  var content = document.querySelector('.wk-content');
+  if (!toc || !list || !content) return;
+
+  var headings = content.querySelectorAll('h2');
+  if (!headings.length) {
+    toc.remove();
+    return;
+  }
+
+  function slugify(text, i) {
+    var base = text.trim().replace(/\s+/g, '-').replace(/[^\wㄱ-ㅎ가-힣-]/g, '');
+    return base ? 'sec-' + base : 'sec-' + (i + 1);
+  }
+
+  var frag = document.createDocumentFragment();
+  headings.forEach(function (h, i) {
+    if (!h.id) h.id = slugify(h.textContent, i);
+
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.textContent;
+    li.appendChild(a);
+    frag.appendChild(li);
+  });
+
+  list.appendChild(frag);
+  toc.hidden = false;
+
+  // 현재 보고 있는 절을 표시
+  if (!('IntersectionObserver' in window)) return;
+  var links = list.querySelectorAll('a');
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      links.forEach(function (a) {
+        a.classList.toggle('is-active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    });
+  }, { rootMargin: '-72px 0px -65% 0px', threshold: 0 });
+  headings.forEach(function (h) { seen.observe(h); });
+})();
