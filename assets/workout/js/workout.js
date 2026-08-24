@@ -239,7 +239,7 @@
 
 /* ===== 일지 본문 목차 =====
    본문 절은 규칙 5 에 따라 3개로 고정이지만, 헤딩을 읽어 만들기 때문에
-   절 이름이 바뀌어도 따라간다. 헤딩이 없으면 목차를 통째로 지운다. */
+   절 이름이 바뀌어도 따라간다. 절이 2개 미만이면 목차를 통째로 지운다. */
 (function () {
   var toc = document.getElementById('wk-toc');
   var list = document.getElementById('wk-toc-list');
@@ -247,7 +247,8 @@
   if (!toc || !list || !content) return;
 
   var headings = content.querySelectorAll('h2');
-  if (!headings.length) {
+  // 절이 하나뿐인 짧은 일지는 목차가 의미 없으므로 지운다.
+  if (headings.length < 2) {
     toc.remove();
     return;
   }
